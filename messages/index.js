@@ -5,7 +5,6 @@ For a complete walkthrough of creating this type of bot see the article at
 http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 -----------------------------------------------------------------------------*/
 "use strict";
-var greet = require('./intents/greet.js');
 var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
 
@@ -33,48 +32,14 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 /*
 .matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 */
-/*.matches('None', (session, args) => {
+.matches('None', (session, args) => {
     session.send('Hi! This is the None intent handler. You said: \'%s\'.', session.message.text);
-})*/
-.matches('Greet', [
-   (session, args, next) => {
-        if(!session.userData.name){
-            session.beginDialog('/profile');
-        } else {
-            next();
-        }
-    },
-    (session, results) => {
-        session.send(greet(session.userData.name));
-    } 
-]);
-
+})
 .onDefault((session) => {
     session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 });
 
-bot.dialog('/', intents);
-
-bot.dialog('/profile', [
-    (session, args, next) => {
-        session.send("Hi, My name is Aidah. I can help you order or shop for anything. Let's get to know each other...");
-        next();
-    },
-    (session) => {
-        builder.Prompts.text(session, "What's your name?");
-    },
-    (session, results, next) => {
-        session.userData.name = results.response;
-        next();
-    },
-    (session) => {
-        builder.Prompts.text(session, "How about your phone number?");
-    },
-    (session, results) => {
-        session.userData.phone = results.response;
-        session.endDialog();
-    }
-]);
+bot.dialog('/', intents);    
 
 if (useEmulator) {
     var restify = require('restify');
