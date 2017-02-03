@@ -47,7 +47,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     (session, results) => {
         session.send(greet(session.userData.name));
     }
-])
+]);
 .onDefault((session) => {
     session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 });
@@ -55,7 +55,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 bot.dialog('/', intents);
 
 bot.dialog('/profile', [
-    (session, next) => {
+    (session, args, next) => {
         session.send("Hi, My name is Aidah. I can help you order or shop for anything. Let's get to know each other...");
         next();
     },
