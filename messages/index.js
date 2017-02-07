@@ -5,6 +5,7 @@ For a complete walkthrough of creating this type of bot see the article at
 http://docs.botframework.com/builder/node/guides/understanding-natural-language/
 -----------------------------------------------------------------------------*/
 "use strict";
+var greet = require("../intentss/greet.js");
 var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
 
@@ -45,19 +46,20 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 bot.dialog('/', [
     (session, args, next) => {
         if(!session.userData.name){
+            session.send("Hello");
             session.beginDialog('/profile');
         } else {
             next();
         }
     },
     (session, results) => {
-        session.send('Hello %s!', session.userData.name);
+        session.send(greet(session.userData.name));
     }
 ]);    
 
 bot.dialog('/profile', [
     (session, args, next) => {
-        session.send("Hi, my name is Aidah. I can help you order or shop for anything. Let's get to know each other...");
+        session.send("My name is Aidah. I can help you order or shop for anything. Let's get to know each other...");
         next();
     },
     (session) => {
