@@ -1,9 +1,3 @@
-/*-----------------------------------------------------------------------------
-This template demonstrates how to use an IntentDialog with a LuisRecognizer to add 
-natural language support to a bot. 
-For a complete walkthrough of creating this type of bot see the article at
-http://docs.botframework.com/builder/node/guides/understanding-natural-language/
------------------------------------------------------------------------------*/
 "use strict";
 var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
@@ -30,16 +24,69 @@ const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' +
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 /*
-.matches('<yourIntent>')... See details at http://docs.botframework.com/builder/node/guides/understanding-natural-language/
-*/
 .matches('None', (session, args) => {
     session.send('Hi! This is the None intent handler. You said: \'%s\'.', session.message.text);
+})*/
+.matches('Bye', (session, args) => {
+    session.send('Good bye');
 })
+
+.matches('ChangeName', [
+    (session, args, next) => {
+        session.send('So you want to change your name? Let\'s do this ...');
+        next();
+    },
+    (session) => {
+        builder.Prompts.text(session, 'What\'s your new name?');
+    },
+    (session, results) => {
+        session.userData.name = results.response;
+        session.send('OK ... I\'ll be calling you %s from now on', session.userData.name);
+        session.endDialog();
+    }
+])
 .onDefault((session) => {
-    session.send('Sorry, I did not understand \'%s\'.', session.message.text);
+    session.send('Sorry, I did not understand \'%s\'. Can you say something else?', session.message.text);
 });
 
-bot.dialog('/', intents);    
+bot.dialog('/', [
+    (session, args, next) => {
+        if(!session.userData.name){
+            session.send('Hello');
+            session.beginDialog('/profile');
+        } else {
+            next();
+        }
+    },
+    (session) => {
+        session.send('Welcome');
+        session.beginDialog('/intents');
+    }
+]);
+
+bot.dialog('/profile', [
+    (session, args, next) => {
+        session.send('My name is Aida. I can hep you find places for anything');
+        session.send('Let\'s get to know each other...');
+        next();
+    },
+    (session) => {
+        builder.Prompts.text(session, 'What\'s your name?');
+    },
+    (session, results, next) => {
+        session.userData.name = results.response;
+        next();
+    },
+    (session) => {
+        builder.Prompts.text(session, 'How about your phone number?')
+    },
+    (session, results) => {
+        session.userData.phone = results.response;
+        session.endDialog();
+    }
+]);
+
+bot.dialog('/intents', intents);
 
 if (useEmulator) {
     var restify = require('restify');
