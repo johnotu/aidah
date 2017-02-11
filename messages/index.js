@@ -1,6 +1,7 @@
 "use strict";
 var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
+var greet = require("../resource/greeting.js");
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -13,7 +14,6 @@ var connector = useEmulator ? new builder.ChatConnector() : new botbuilder_azure
 
 var bot = new builder.UniversalBot(connector);
 
-// Make sure you add code to validate these fields
 var luisAppId = process.env.LuisAppId;
 var luisAPIKey = process.env.LuisAPIKey;
 var luisAPIHostName = process.env.LuisAPIHostName || 'api.projectoxford.ai';
@@ -28,7 +28,11 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     session.send('Hi! This is the None intent handler. You said: \'%s\'.', session.message.text);
 })*/
 .matches('Bye', (session, args) => {
-    session.send('Good bye');
+    session.send(greet.greeting.farewell(session.userData.name));
+})
+
+.matches('Greet', (session, args) => {
+    session.send(greet.greeting.welcome(session.userData.name));
 })
 
 .matches('ChangeName', [
@@ -59,7 +63,7 @@ bot.dialog('/', [
         }
     },
     (session) => {
-        session.send('Welcome');
+        session.send(greet.greeting.welcome(session.userData.name));
         session.beginDialog('/intents');
     }
 ]);
