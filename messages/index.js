@@ -2,6 +2,7 @@
 var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
 var greet = require("../resource/greeting.js");
+var sms = require("../resource/smsService.js");
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -70,7 +71,7 @@ bot.dialog('/', [
 
 bot.dialog('/profile', [
     (session, args, next) => {
-        session.send('My name is Aida. I can hep you find places for anything');
+        session.send('My name is Aida. I can help you find places for anything');
         session.send('Let\'s get to know each other...');
         next();
     },
@@ -82,11 +83,48 @@ bot.dialog('/profile', [
         next();
     },
     (session) => {
-        builder.Prompts.text(session, 'How about your phone number?')
+        builder.Prompts.text(session, 'How about your phone number? Please Begin with \'+233...\'')
+    },
+    (session, results, next) => {
+        session.userData.inputphone = results.response;
+        session.userData.code = sms.sms.getCode();
+        sms.sms.sendCode(session.userData.inputphone, session.userData.code);
+        next();  
+    },
+    (session) => {
+        builder.Prompts.text(session, 'Kindly enter the 6-digit code I just sent to your phone via SMS');
     },
     (session, results) => {
-        session.userData.phone = results.response;
-        session.endDialog();
+        if(session.userData.code == results.response){
+            session.userData.phone = session.userData.inputphone;
+            session.endDialog();
+        } else {
+            session.send('You have entered an incorrect code. Please check your inbox for another sms and be careful to enter the exact code that was sent');
+            session.beginDialog('/smserror');
+        }
+    }
+]);
+
+bot.dialog('/smserror', [
+    (session) => {
+        builder.Prompts.text(session, 'Enter your phone number? \'+233...\'')
+    },
+    (session, results, next) => {
+        var phone = '+233' + results.response;
+        session.userData.code = sms.sms.getCode();
+        sms.sms.sendCode(phone, code);
+        next();  
+    },
+    (session) => {
+        builder.Prompts.text(session, 'Kindly enter the 6-digit code I just sent to your phone via SMS');
+    },
+    (session, results) => {
+        if(session.userData.code == results.response){
+            session.endDialog();
+        } else {
+            session.send('You have entered an incorrect code. Please check your inbox for another sms and be careful to enter the exact code that was sent');
+            session.beginDialog('/smserror');
+        }
     }
 ]);
 
