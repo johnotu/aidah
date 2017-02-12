@@ -28,11 +28,11 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('None', (session, args) => {
     session.send('Hi! This is the None intent handler. You said: \'%s\'.', session.message.text);
 })*/
-.matches('Bye', (session, args) => {
+.matches('Bye', (session) => {
     session.send(greet.greeting.farewell(session.userData.name));
 })
 
-.matches('Greet', (session, args) => {
+.matches('Greet', (session) => {
     session.send(greet.greeting.welcome(session.userData.name));
 })
 
@@ -50,6 +50,15 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
         session.endDialog();
     }
 ])
+.matches('HowAreYou', (session) => {
+    session.send('I\'m very well. Thanks.');
+})
+.matches('GetNameAidah', (session) => {
+    session.send('I am Aidah');
+})
+.matches('SayPurposeAidah', (session) => {
+    session.send('I can help you order or shop for anything but for now, I\'ll just help you find places for anything');
+})
 .onDefault((session) => {
     session.send('Sorry, I did not understand \'%s\'. Can you say something else?', session.message.text);
 });
