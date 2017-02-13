@@ -1,0 +1,89 @@
+{
+	"burger": [
+		[
+			"burger store 1",
+			"address of burger store 1",
+			"region of burger store 1",
+			"phone of burger store 1",
+			"website of burger store 1",
+			"email of burger store 1",
+			0
+		],
+		[
+			"burger store 2",
+			"address of burger store 2",
+			"region of burger store 2",
+			"phone of burger store 2",
+			"website of burger store 2",
+			"email of burger store 2",
+			0
+		],
+		[
+			"burger store 3",
+			"address of burger store 3",
+			"region of burger store 3",
+			"phone of burger store 3",
+			"website of burger store 3",
+			"email of burger store 3",
+			0
+		]		
+	],
+	"pizza": [
+		[
+			"pizza store 1",
+			"address of pizza store 1",
+			"region of pizza store 1",
+			"phone of pizza store 1",
+			"website of pizza store 1",
+			"email of pizza store 1",
+			0
+		],
+		[
+			"pizza store 2",
+			"address of pizza store 2",
+			"region of pizza store 2",
+			"phone of pizza store 2",
+			"website of pizza store 2",
+			"email of pizza store 2",
+			0
+		],
+		[
+			"pizza store 3",
+			"address of pizza store 3",
+			"region of pizza store 3",
+			"phone of pizza store 3",
+			"website of pizza store 3",
+			"email of pizza store 3",
+			0
+		]
+	],
+	"coffee": [
+		[
+			"coffee store 1",
+			"address of coffee store 1",
+			"region of coffee store 1",
+			"phone of coffee store 1",
+			"website of coffee store 1",
+			"email of coffee store 1",
+			0
+		],
+		[
+			"coffee store 2",
+			"address of coffee store 2",
+			"region of coffee store 2",
+			"phone of coffee store 2",
+			"website of coffee store 2",
+			"email of coffee store 2",
+			0
+		],
+		[
+			"pizza store 3",
+			"address of coffee store 3",
+			"region of cpffee store 3",
+			"phone of coffee store 3",
+			"website of coffee store 3",
+			"email of coffee store 3",
+			0
+		]
+	]
+}
