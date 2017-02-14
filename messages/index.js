@@ -75,22 +75,33 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
             session.dialogData.mealType = 'coffee';
             next({ response: coffeeEntity.entity });
         } else {
-            session.send('Hey %s, I can only point you to great food places for now', session.userData.name);
+            session.send('Hey %s, I can only point you to a few great food places for now', session.userData.name);
         }
     },
-    function(session, results){
-        var id = Math.floor(Math.random()*3);
-        for(var i=0; i<places[session.dialogData.mealType][id].length; i++){
-            session.send(places[session.dialogData.mealType][id][i]);
-        }
-        //var choice = results.response.entity;
-        /* For when we allow user to choose from store names
-        var namesArr = [];
+    function(session){
+        var storeNames = [];
         for(var i=0; i<places[session.dialogData.mealType].length; i++){
-            namesArr.push(places[session.dialogData.mealType][i][0]);
+            storeNames.push(places[session.dialogData.mealType][i][0]);
         }
-        builder.Prompts.choice(session, ('You can choose from these great %s places ...', session.dialogData.mealType), namesArr);
-        next();*/
+        builder.Prompts.choice(session, 'Which of these places is your favourite?', storeNames, {
+            maxRetries: 2,
+            retryPrompt: 'Oops, I can only show you these places for now, please pick one of them'
+        });
+    },
+    function(session, results){
+        var choicePlace = results.response.entity;
+        var choicePlaceId = 0;
+        for(var i=0; i<places[session.dialogData.mealType].length; i++){
+            if(places[session.dialogData.mealType][i][0] === choicePlace){
+                choicePlaceId = i;
+            } //TODO add else to pick a random store.
+        }
+        var card = new builder.HeroCard(session)
+            .title(places[session.dialogData.mealType][choicePlaceId][0])
+            .subtitle(places[session.dialogData.mealType][choicePlaceId][1])
+            .text(places[session.dialogData.mealType][choicePlaceId][3]);
+        var msg = new builder.Message(session).addAttachment(card);
+        session.send(msg);
     }
 ])
 .onDefault((session) => {
