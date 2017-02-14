@@ -60,42 +60,39 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('SayPurposeAidah', (session) => {
     session.send('I can help you order or shop for anything but for now, I\'ll just help you find places for anything');
 })
-/*.matches('GetService', [
+.matches('GetService', [
     function(session, args, next){
         var pizzaEntity = builder.EntityRecognizer.findEntity(args.entities, 'pizza');
         var burgerEntity = builder.EntityRecognizer.findEntity(args.entities, 'burger');
         var coffeeEntity = builder.EntityRecognizer.findEntity(args.entities, 'coffee');
         if(pizzaEntity){
             session.dialogData.mealType = 'pizza';
-            next({ response: pizzaEntity.entity })
-        } elseif(burgerEntity){
+            next({ response: pizzaEntity.entity });
+        } else if(burgerEntity){
             session.dialogData.mealType = 'burger';
             next({ response: burgerEntity.entity });
-        } elseif(coffeeEntity){
+        } else if(coffeeEntity){
             session.dialogData.mealType = 'coffee';
             next({ response: coffeeEntity.entity });
         } else {
-            builder.Prompts.text(session, 'It looks like you want something...');
+            session.send('Hey %s, I can only point you to great food places for now', session.userData.name);
         }
     },
     function(session, results){
-        var mealType = results.response;
-        var message = 'You can get ';
-        if(sesion.dialogData.mealType === 'pizza'){
-            message += 'pizza at ';
-            
-        } elseif(session.dialogData.mealType === 'burger'){
-            message += 'burger at ';
-            
-        } else {
-            message += 'coffee at ';
-            
+        var id = Math.floor(Math.random()*3);
+        for(var i=0; i<places[session.dialogData.mealType][id].length; i++){
+            session.send(places[session.dialogData.mealType][id][i]);
         }
-        
-        session.send(message + JSON.stringify(places[session.dialogData.mealType][Math.floor(Math.random()*3)]));
-        session.endDialog();
+        //var choice = results.response.entity;
+        /* For when we allow user to choose from store names
+        var namesArr = [];
+        for(var i=0; i<places[session.dialogData.mealType].length; i++){
+            namesArr.push(places[session.dialogData.mealType][i][0]);
+        }
+        builder.Prompts.choice(session, ('You can choose from these great %s places ...', session.dialogData.mealType), namesArr);
+        next();*/
     }
-])*/
+])
 .onDefault((session) => {
     session.send('Sorry, I did not understand \'%s\'. Can you say something else?', session.message.text);
 });
