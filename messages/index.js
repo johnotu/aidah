@@ -22,7 +22,7 @@ var luisAPIHostName = process.env.LuisAPIHostName || 'api.projectoxford.ai';
 
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
 
-// Main dialog with LUIS
+
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 /*
@@ -34,6 +34,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 })
 
 .matches('Greet', (session) => {
+    session.beginDialog('/getlocation');
     session.send(greet.greeting.welcome(session.userData.name));
 })
 
@@ -120,6 +121,26 @@ bot.dialog('/', [
     (session) => {
         session.send(greet.greeting.welcome(session.userData.name));
         session.beginDialog('/intents');
+    }
+]);
+
+bot.dialog('/getlocation', [
+    function(session){
+        var options = {
+            prompt: 'I need to know your location so I can serve you better',
+            useNativeControl: true,
+            reverseGeocode: true,
+            requiredFields:
+                locationDialog.LocationRequiredFields.streetAddress |
+                locationDialog.LocationRequiredFields.region |
+                locationDialog.LocationRequiredFields.country
+        };
+        locationDialog.getLocation(session, options);
+    },
+    function(session, results){
+        if(results.response){
+            session.userData.location = results.response;
+        }
     }
 ]);
 
