@@ -123,7 +123,7 @@ bot.dialog('/', [
         session.beginDialog('/intents');
     }
 ]);
-
+/* Location dialog @TODO check why it has errors
 bot.dialog('/getlocation', [
     function(session){
         var options = {
@@ -143,7 +143,7 @@ bot.dialog('/getlocation', [
         }
     }
 ]);
-
+*/
 bot.dialog('/profile', [
     (session, args, next) => {
         session.send('My name is Aida. I can help you find places for anything');
