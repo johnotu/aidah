@@ -3,7 +3,7 @@ var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
 var greet = require("../resource/greeting.js");
 var sms = require("../resource/smsService.js");
-var places = require("../resource/placesDB.json");
+var places = require("../resource/placesDb.json");
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
