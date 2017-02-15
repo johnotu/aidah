@@ -1,9 +1,9 @@
 "use strict";
 var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
-var greet = require("../resource/greeting.js");
-var sms = require("../resource/smsService.js");
-var places = require("../resource/placesDb.json");
+var greet = require("../utils/greeting.js");
+var sms = require("../utils/smsService.js");
+var places = require("../utils/placesDb.json");
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -34,8 +34,8 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 })
 
 .matches('Greet', (session) => {
-    session.beginDialog('/getlocation');
     session.send(greet.greeting.welcome(session.userData.name));
+//    session.send(session.message.user.id); or id which can be used to get other data.
 })
 
 .matches('ChangeName', [
@@ -110,18 +110,11 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 });
 
 bot.dialog('/', [
-    (session, args, next) => {
-        if(!session.userData.name){
-            session.send('Hello');
-            session.beginDialog('/profile');
-        } else {
-            next();
-        }
-    },
-    (session) => {
-        session.send(greet.greeting.welcome(session.userData.name));
+    (session, next) => {
+        session.userData.name = session.message.user.name.split(' ')[0];
+        session.send('Hello %s! My name is Aidah. I can help you find places for anything', session.userData.name);
         session.beginDialog('/intents');
-    }
+    }   
 ]);
 /* Location dialog @TODO check why it has errors
 bot.dialog('/getlocation', [
