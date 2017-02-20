@@ -4,6 +4,7 @@ var botbuilder_azure = require("botbuilder-azure");
 var greet = require("../utils/greeting.js");
 var sms = require("../utils/smsService.js");
 var places = require("../utils/placesDb.json");
+var movies = require("../utils/moviesDb.json");
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -61,11 +62,21 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 .matches('SayPurposeAidah', (session) => {
     session.send('I can help you order or shop for anything but for now, I\'ll just help you find places for anything');
 })
+.matches('GetMovies', [
+    (session, args) => {
+        var movieEntity = builder.EntityRecognizer.findEntity(args.entities, 'movie');
+        if(movieEntity){
+            session.dialogData.movie = 'movie';
+            session.beginDialog('/getMovies');
+        }
+    }
+])
 .matches('GetService', [
     function(session, args, next){
         var pizzaEntity = builder.EntityRecognizer.findEntity(args.entities, 'pizza');
         var burgerEntity = builder.EntityRecognizer.findEntity(args.entities, 'burger');
         var coffeeEntity = builder.EntityRecognizer.findEntity(args.entities, 'coffee');
+        
         if(pizzaEntity){
             session.dialogData.mealType = 'pizza';
             next({ response: pizzaEntity.entity });
@@ -76,7 +87,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
             session.dialogData.mealType = 'coffee';
             next({ response: coffeeEntity.entity });
         } else {
-            session.send('Hey %s, I can only point you to a few great food places for now', session.userData.name);
+            session.send('Hey %s, I can only point you to a few great food/movie places for now', session.userData.name);
         }
     },
     function(session){
@@ -137,6 +148,51 @@ bot.dialog('/getlocation', [
     }
 ]);
 */
+bot.dialog('/getMovies', [
+   (session) => {
+       session.send('These are the movies currently showing at Silverbird Cinema, Accra Mall ...');
+       var cards = [
+           new builder.ThumbnailCard(session)
+            .title(movies["movie"][0][0])
+            .subtitle(movies["movie"][0][1])
+            
+            .text(movies["movie"][0][2])
+            
+            .images([
+                builder.CardImage.create(session, movies["movie"][0][5])
+            ])
+            .buttons([
+                builder.CardAction.openUrl(session, 'http://silverbirdcinemas.com/accra/', 'More')
+            ]),
+           new builder.ThumbnailCard(session)
+            .title(movies["movie"][1][0])
+            .subtitle(movies["movie"][1][1])
+            .text(movies["movie"][1][2])
+            .images([
+                builder.CardImage.create(session, movies["movie"][1][5])
+            ])
+            .buttons([
+                builder.CardAction.openUrl(session, 'http://silverbirdcinemas.com/accra/', 'More')
+            ]),
+           new builder.ThumbnailCard(session)
+            .title(movies["movie"][2][0])
+            .subtitle(movies["movie"][2][1])
+            .text(movies["movie"][2][2])
+            .images([
+                builder.CardImage.create(session, movies["movie"][2][5])
+            ])
+            .buttons([
+                builder.CardAction.openUrl(session, 'http://silverbirdcinemas.com/accra/', 'More')
+            ])
+       ];
+       var reply = new builder.Message(session)
+        .attachmentLayout(builder.AttachmentLayout.carousel)
+        .attachments(cards);
+       session.send(reply);
+       session.endDialog();
+   } 
+]);
+
 bot.dialog('/profile', [
     (session, args, next) => {
         session.send('My name is Aida. I can help you find places for anything');
