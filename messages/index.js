@@ -4,7 +4,7 @@ var botbuilder_azure = require("botbuilder-azure");
 var greet = require("../utils/greeting.js");
 var sms = require("../utils/smsService.js");
 var places = require("../utils/placesDb.json");
-var movies = require("../utils/moviesDb.json");
+var movies = require("../utils/moviesDB.json");
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
