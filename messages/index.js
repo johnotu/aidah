@@ -112,6 +112,9 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
             .title(places[session.dialogData.mealType][choicePlaceId][0])
             .subtitle(places[session.dialogData.mealType][choicePlaceId][1])
             .text(places[session.dialogData.mealType][choicePlaceId][3]);
+/*            .buttons([
+                builder.CardAction.call(session, '+233264537375', 'Call')
+            ]);*/
         var msg = new builder.Message(session).addAttachment(card);
         session.send(msg);
     }
