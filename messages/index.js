@@ -157,40 +157,26 @@ bot.dialog('/getlocation', [
 bot.dialog('/getMovies', [
    (session) => {
        session.send('These are the movies currently showing at Silverbird Cinema, Accra Mall ...');
-       var cards = [
-           new builder.ThumbnailCard(session)
-            .title(movies["movie"][0][0])
-            .subtitle(movies["movie"][0][1])
-            
-            .text(movies["movie"][0][2])
-            
-            .images([
-                builder.CardImage.create(session, movies["movie"][0][5])
-            ])
-            .buttons([
-                builder.CardAction.openUrl(session, 'http://silverbirdcinemas.com/accra/', 'More')
-            ]),
-           new builder.ThumbnailCard(session)
-            .title(movies["movie"][1][0])
-            .subtitle(movies["movie"][1][1])
-            .text(movies["movie"][1][2])
-            .images([
-                builder.CardImage.create(session, movies["movie"][1][5])
-            ])
-            .buttons([
-                builder.CardAction.openUrl(session, 'http://silverbirdcinemas.com/accra/', 'More')
-            ]),
-           new builder.ThumbnailCard(session)
-            .title(movies["movie"][2][0])
-            .subtitle(movies["movie"][2][1])
-            .text(movies["movie"][2][2])
-            .images([
-                builder.CardImage.create(session, movies["movie"][2][5])
-            ])
-            .buttons([
-                builder.CardAction.openUrl(session, 'http://silverbirdcinemas.com/accra/', 'More')
-            ])
-       ];
+       session.sendTyping();
+       var cards = [];
+       for(var i=0; i<movies.movie.length; i++){
+           cards.push(
+                new builder.ThumbnailCard(session)
+                    .title(movies.movie[i][0])
+                    .subtitle(movies.movie[i][1])
+                    
+                    .text(movies.movie[i][2])
+                    
+                    .images([
+                        builder.CardImage.create(session, movies.movie[i][5])
+                    ])
+                    .buttons([
+                        builder.CardAction.openUrl(session, 'http://silverbirdcinemas.com/accra/', 'See More')
+                    ])
+            );
+        }
+
+
        var reply = new builder.Message(session)
         .attachmentLayout(builder.AttachmentLayout.carousel)
         .attachments(cards);
