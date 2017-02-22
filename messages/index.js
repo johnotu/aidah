@@ -111,7 +111,10 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
         var card = new builder.HeroCard(session)
             .title(places[session.dialogData.mealType][choicePlaceId][0])
             .subtitle(places[session.dialogData.mealType][choicePlaceId][1])
-            .text(places[session.dialogData.mealType][choicePlaceId][3]);
+            .text(places[session.dialogData.mealType][choicePlaceId][3])
+            .images([
+                builder.CardImage.create(session, places[session.dialogData.mealType][choicePlaceId][6])
+            ]);
 /*            .buttons([
                 builder.CardAction.call(session, '+233264537375', 'Call')
             ]);*/
