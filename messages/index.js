@@ -155,10 +155,11 @@ bot.dialog('/getlocation', [
 ]);
 */
 bot.dialog('/getMovies', [
-   (session) => {
+   function(session){
        session.send('These are the movies currently showing at Silverbird Cinema, Accra Mall ...');
        session.sendTyping();
        var cards = [];
+       var selectionArr = [];
        for(var i=0; i<movies.movie.length; i++){
            cards.push(
                 new builder.ThumbnailCard(session)
@@ -169,20 +170,46 @@ bot.dialog('/getMovies', [
                     
                     .images([
                         builder.CardImage.create(session, movies.movie[i][5])
+                            .tap(builder.CardAction.showImage(session, movies.movie[i][5])),
                     ])
                     .buttons([
-                        builder.CardAction.openUrl(session, 'http://silverbirdcinemas.com/accra/', 'See More')
+                        builder.CardAction.imBack(session, movies.movie[i][0], "Select")
                     ])
             );
+            selectionArr.push(movies.movie[i][0]);
         }
 
-
-       var reply = new builder.Message(session)
-        .attachmentLayout(builder.AttachmentLayout.carousel)
-        .attachments(cards);
-       session.send(reply);
-       session.endDialog();
-   } 
+        var movieCarousel = new builder.Message(session)
+            .attachmentLayout(builder.AttachmentLayout.carousel)
+            .attachments(cards);
+        
+        builder.Prompts.choice(session, movieCarousel, selectionArr);
+   },
+   function(session, results){
+       session.dialogData.movie = results.response.entity;
+       var choiceMovieId = 0;
+       for(var i=0; i<movies.movie.length; i++){
+           if(movies.movie[i][0] === session.dialogData.movie){
+               choiceMovieId = i;
+           }
+       }
+       builder.Prompts.choice(session, 'Please select a screen time for your movie ...', movies.movie[choiceMovieId][7]);
+   },
+   function(session, results){
+       session.dialogData.movieTime = results.response.entity;
+       var msg = 'Please confirm you want to see ' + session.dialogData.movie + 'on ' + session.dialogData.movieTime;
+       builder.Prompts.choice(session, msg, "Yes|No");
+   },
+   function(session, results){
+       if(results.response){
+           var answer = results.response.entity;
+           if(answer === "Yes"){
+               session.send("Thank you, your ticket is on the way");
+           } else {
+               session.send("Oh snap! Maybe I can help you with something else");
+           }
+       }
+   }
 ]);
 
 bot.dialog('/profile', [
