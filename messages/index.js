@@ -204,9 +204,9 @@ bot.dialog('/getMovies', [
        if(results.response){
            var answer = results.response.entity;
            if(answer === "Yes"){
-               session.send("Thank you, your ticket is on the way");
+               session.endDialog("Thank you, your ticket is on the way");
            } else {
-               session.send("Oh snap! Maybe I can help you with something else");
+               session.endDialog("Oh snap! Maybe I can help you with something else");
            }
        }
    }
