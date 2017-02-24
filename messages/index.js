@@ -5,6 +5,7 @@ var greet = require("../utils/greeting.js");
 var sms = require("../utils/smsService.js");
 var places = require("../utils/placesDb.json");
 var movies = require("../utils/moviesDB.json");
+var dresses = require("../utils/dressesDb.json");
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -230,6 +231,63 @@ bot.dialog('/getMovies', [
            }
        }
    }
+]);
+
+bot.dialog('/getDress', [
+	function(session){
+		session.sendTyping();
+		session.send("Oh nice! I'm sure you'll look good in a %s dress", session.userData.favColor);
+		session.send("I have some suggesstions but...");
+		builder.Prompts.choice(session, 'How much would you like to spend on it?', ["GHC50 - GHC100", "GHC101 - GHC200", "GHC201 - GHC500"]);
+	},
+	function(session, results){
+		session.sendTyping();
+		session.send("Kindly select from these fine options ...");
+		session.sendTyping();
+		var choicePriceRange = results.response.entity;
+		var color = session.userData.favColor;
+		var selectDresses = [];
+		var selectionArr = [];
+		if(color in dresses){
+			for(var i=0; i<dresses.color.length; i++){
+				if(dresses.color[i][3] === choicePriceRange){
+					selectDresses.push(
+						new builder.HeroCard(session)
+							.title(dresses.color[i][0])
+							.subtitle(dresses.color[i][2] + " | " + dresses.color[i][1])
+							.images([
+								builder.CardImage.create(session, dresses.color[i][4])
+									.tap(builder.CardAction.showImage(session, dresses.color[i][4])),
+							])
+							.buttons([
+								builder.CardAction.imBack(session, dresses.color[i][0], "Select")
+							])
+					);
+					selectionArr.push(dresses.color.[i][0]);
+				}
+				var dressCarousel = new builder.Message(session)
+					.attachmentLayout(builder.AttachmentLayout.carousel)
+					.attachments(selectDresses);
+
+				builder.Prompts.choice(session, dressCarousel, selectionArr);
+			}
+		} else {
+			session.endDialog("So sorry %s, John hasn't taught me %s colored dresses yet", session.userData.name, session.userData.favColor);
+		}
+	},
+	function(session, results){
+		var dressName = results.response.entity;
+		var color = session.userData.favColor;
+		var dressId = 0;
+		for(var i=0; i<dresses.color.length; i++){
+			if(dresses.color[i][0] === dressName){
+				dressId = i;
+			}
+		}
+		session.userData.orderName = dressName;
+		session.userData.orderPrice = dresses.color[dressId][2];
+		session.beginDialog('/processOrder');
+	}
 ]);
 
 bot.dialog('/profile', [
