@@ -333,6 +333,18 @@ bot.dialog('/processOrder', [
 	}
 ]);
 
+bot.dialog('/getLocation', [
+	function(session){
+		session.sendTyping();
+		builder.Prompts.text(session, "Please enter your current address");
+	},
+	function(session, results){
+		if(response.results){
+			session.userData.location = results.response.entity;
+			session.endDialog("Thank you");
+		}
+	}
+]);
 
 bot.dialog('/profile', [
     (session, args, next) => {
