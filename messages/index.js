@@ -5,6 +5,7 @@ var greet = require("../utils/greeting.js");
 var sms = require("../utils/smsService.js");
 var places = require("../utils/placesDb.json");
 var movies = require("../utils/moviesDB.json");
+var dresses = require("../utils/dressesDb.json");
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -22,7 +23,6 @@ var luisAPIKey = process.env.LuisAPIKey;
 var luisAPIHostName = process.env.LuisAPIHostName || 'api.projectoxford.ai';
 
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
-
 
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] })
@@ -122,6 +122,27 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
         session.send(msg);
     }
 ])
+.matches('GetDress', [
+	function(session, args, next){
+        session.userData.location = "20 Aluguntugui Street, East Legon, Accra";
+		var dressEntity = builder.EntityRecognizer.findEntity(args.entities, 'dress');
+		var colorEntity = builder.EntityRecognizer.findEntity(args.entities, 'color');
+		if(dressEntity){
+			if(colorEntity){
+				session.userData.favColor = colorEntity.entity;
+				session.beginDialog('/getDress');
+			} else{
+				builder.Prompts.text(session, 'What color of dress would you like?');
+			}
+		}
+	},
+	function(session, results){
+		if(results.response){
+			session.userData.favColor = results.response.entity;
+			session.beginDialog('/getDress');
+		}
+	}
+])
 .onDefault((session) => {
     session.send('Sorry, I did not understand \'%s\'. Can you say something else?', session.message.text);
 });
@@ -210,6 +231,120 @@ bot.dialog('/getMovies', [
            }
        }
    }
+]);
+
+bot.dialog('/getDress', [
+	function(session){
+		session.sendTyping();
+		session.send("Oh nice! I'm sure you'll look good in a %s dress", session.userData.favColor);
+		session.send("I have some suggesstions but...");
+		builder.Prompts.choice(session, 'How much would you like to spend on it?', ["GHC50 - GHC100", "GHC101 - GHC200", "GHC201 - GHC500"]);
+	},
+	function(session, results){
+		session.sendTyping();
+		session.send("Kindly select from these fine options ...");
+		session.sendTyping();
+		var choicePriceRange = results.response.entity;
+		var color = session.userData.favColor;
+		var selectDresses = [];
+		var selectionArr = [];
+		if(color in dresses){
+			for(var i=0; i<dresses[color].length; i++){
+				if(dresses[color][i][3] === choicePriceRange){
+                    var sub = dresses[color][i][2] + " | " + dresses[color][i][1];
+					selectDresses.push(
+						new builder.HeroCard(session)
+							.title(dresses[color][i][0])
+							.subtitle(sub)
+							.images([
+								builder.CardImage.create(session, dresses[color][i][4])
+									.tap(builder.CardAction.showImage(session, dresses[color][i][4])),
+							])
+							.buttons([
+								builder.CardAction.imBack(session, dresses[color][i][0], "Select")
+							])
+					);
+					selectionArr.push(dresses[color][i][0]);
+				}
+			}
+            var dressCarousel = new builder.Message(session)
+					.attachmentLayout(builder.AttachmentLayout.carousel)
+					.attachments(selectDresses);
+
+			builder.Prompts.choice(session, dressCarousel, selectionArr);
+		} else {
+			session.endDialog("So sorry %s, John hasn't taught me %s colored dresses yet", session.userData.name, session.userData.favColor);
+		}
+	},
+	function(session, results){
+		var dressName = results.response.entity;
+		var color = session.userData.favColor;
+		var dressId = 0;
+		for(var i=0; i<dresses[color].length; i++){
+			if(dresses[color][i][0] === dressName){
+				dressId = i;
+			}
+		}
+		session.userData.orderName = dressName;
+		session.userData.orderPrice = dresses[color][dressId][2];
+		session.beginDialog('/processOrder');
+	}
+]);
+
+bot.dialog('/processOrder', [
+	function(session){
+		session.sendTyping();
+		if(session.userData.location){
+			var msg = "Would you want the order delivered to " + session.userData.location + "?";
+			builder.Prompts.choice(session, msg, "Yes|No");
+		} else{
+			session.send("Looks like I don't have your address on record. Can you say where the order should be delivered?");
+			session.beginDialog('/getLocation');
+			var msg = "Would you want the order delivered to " + session.userData.location + "?";
+			builder.Prompts.choice(session, msg, "Yes|No");
+		}
+	},
+	function(session, results, next){
+		if(results.response){
+			var answer = results.response.entity;
+			if(answer === "Yes"){
+				session.userData.orderDeliveryLocation = session.userData.location;
+				next();
+			} else{
+				session.beginDialog('/getLocation');
+				session.userData.orderDeliveryLocation = session.userData.location;
+				next();
+			}
+		}
+	},
+	// Confirm payment for order name, price and delivery address
+	function(session){
+		var msg = "Please confirm that I should pay for " + session.userData.orderName + " for " + session.userData.orderPrice + " to be delivered to " + session.userData.orderDeliveryLocation;
+		builder.Prompts.choice(session, msg, "Yes|No");
+	},
+	function(session, results){
+		if(results.response){
+			var answer = results.response.entity;
+			if(answer === "Yes"){
+				session.send("Great. Your %s order has been paid for and will be sent shortly", session.userData.orderName);
+			} else{
+				session.endDialog("Oh OK. Maybe I can help you get some other thing");
+			}
+		}
+	}
+]);
+
+bot.dialog('/getLocation', [
+	function(session){
+		session.sendTyping();
+		builder.Prompts.text(session, "Please enter your current address");
+	},
+	function(session, results){
+		if(results.response){
+			session.userData.location = results.response;
+		}
+        session.endDialog("Thank you");
+	}
 ]);
 
 bot.dialog('/profile', [
