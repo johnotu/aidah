@@ -290,6 +290,50 @@ bot.dialog('/getDress', [
 	}
 ]);
 
+bot.dialog('/processOrder', [
+	function(session){
+		session.sendTyping();
+		if(session.userData.location){
+			var msg = "Would you want the order delivered to " + session.userData.location + "?";
+			builder.Prompts.choice(session, msg, "Yes|No");
+		} else{
+			session.send("Looks like I don't have your address on record. Can you say where the order should be delivered?");
+			session.beginDialog('/getLocation');
+			var msg = "Would you want the order delivered to " + session.userData.location + "?";
+			builder.Prompts.choice(session, msg, "Yes|No");
+		}
+	},
+	function(session, results, next){
+		if(results.response){
+			var answer = results.response.entity;
+			if(answer === "Yes"){
+				session.userData.orderDeliveryLocation = session.userData.location;
+				next();
+			} else{
+				session.beginDialog('/getLocation');
+				session.userData.orderDeliveryLocation = session.userData.location;
+				next();
+			}
+		}
+	},
+	// Confirm payment for order name, price and delivery address
+	function(session){
+		var msg = "Please confirm that I should pay for " + session.userData.orderName + " for " + session.userData.orderPrice + " to be delivered to " + session.userData.orderDeliveryLocation;
+		builder.Prompts.choice(session, msg, "Yes|No");
+	},
+	function(session, results){
+		if(results.response){
+			var answer = results.response.entity;
+			if(answer === "Yes"){
+				session.send("Great. Your %s order has been paid for and will be sent shortly");
+			} else{
+				session.endDialog("Oh OK. Maybe I can help you get some other thing");
+			}
+		}
+	}
+]);
+
+
 bot.dialog('/profile', [
     (session, args, next) => {
         session.send('My name is Aida. I can help you find places for anything');
