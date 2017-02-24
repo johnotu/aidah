@@ -122,6 +122,26 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
         session.send(msg);
     }
 ])
+.matches('GetDress', [
+	function(session, args, next){
+		var dressEntity = builder.EntityRecognizer.findEntity(args.entities, 'dress');
+		var colorEntity = builder.EntityRecognizer.findEntity(args.entities, 'color');
+		if(dressEntity){
+			if(colorEntity){
+				session.userData.favColor = colorEntity;
+				session.beginDialog('/getDress');
+			} else{
+				builder.Prompts.text(session, 'What color of dress would you like?');
+			}
+		}
+	},
+	function(session, results){
+		if(results.response){
+			session.userData.favColor = results.response.entity;
+			session.beginDialog('/getDress');
+		}
+	}
+])
 .onDefault((session) => {
     session.send('Sorry, I did not understand \'%s\'. Can you say something else?', session.message.text);
 });
