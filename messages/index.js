@@ -24,7 +24,6 @@ var luisAPIHostName = process.env.LuisAPIHostName || 'api.projectoxford.ai';
 
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
 
-
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 /*
@@ -125,11 +124,12 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 ])
 .matches('GetDress', [
 	function(session, args, next){
+        session.userData.location = "20 Aluguntugui Street, East Legon, Accra";
 		var dressEntity = builder.EntityRecognizer.findEntity(args.entities, 'dress');
 		var colorEntity = builder.EntityRecognizer.findEntity(args.entities, 'color');
 		if(dressEntity){
 			if(colorEntity){
-				session.userData.favColor = colorEntity;
+				session.userData.favColor = colorEntity.entity;
 				session.beginDialog('/getDress');
 			} else{
 				builder.Prompts.text(session, 'What color of dress would you like?');
@@ -249,28 +249,29 @@ bot.dialog('/getDress', [
 		var selectDresses = [];
 		var selectionArr = [];
 		if(color in dresses){
-			for(var i=0; i<dresses.color.length; i++){
-				if(dresses.color[i][3] === choicePriceRange){
+			for(var i=0; i<dresses[color].length; i++){
+				if(dresses[color][i][3] === choicePriceRange){
+                    var sub = dresses[color][i][2] + " | " + dresses[color][i][1];
 					selectDresses.push(
 						new builder.HeroCard(session)
-							.title(dresses.color[i][0])
-							.subtitle(dresses.color[i][2] + " | " + dresses.color[i][1])
+							.title(dresses[color][i][0])
+							.subtitle(sub)
 							.images([
-								builder.CardImage.create(session, dresses.color[i][4])
-									.tap(builder.CardAction.showImage(session, dresses.color[i][4])),
+								builder.CardImage.create(session, dresses[color][i][4])
+									.tap(builder.CardAction.showImage(session, dresses[color][i][4])),
 							])
 							.buttons([
-								builder.CardAction.imBack(session, dresses.color[i][0], "Select")
+								builder.CardAction.imBack(session, dresses[color][i][0], "Select")
 							])
 					);
-					selectionArr.push(dresses.color.[i][0]);
+					selectionArr.push(dresses[color][i][0]);
 				}
-				var dressCarousel = new builder.Message(session)
+			}
+            var dressCarousel = new builder.Message(session)
 					.attachmentLayout(builder.AttachmentLayout.carousel)
 					.attachments(selectDresses);
 
-				builder.Prompts.choice(session, dressCarousel, selectionArr);
-			}
+			builder.Prompts.choice(session, dressCarousel, selectionArr);
 		} else {
 			session.endDialog("So sorry %s, John hasn't taught me %s colored dresses yet", session.userData.name, session.userData.favColor);
 		}
@@ -279,13 +280,13 @@ bot.dialog('/getDress', [
 		var dressName = results.response.entity;
 		var color = session.userData.favColor;
 		var dressId = 0;
-		for(var i=0; i<dresses.color.length; i++){
-			if(dresses.color[i][0] === dressName){
+		for(var i=0; i<dresses[color].length; i++){
+			if(dresses[color][i][0] === dressName){
 				dressId = i;
 			}
 		}
 		session.userData.orderName = dressName;
-		session.userData.orderPrice = dresses.color[dressId][2];
+		session.userData.orderPrice = dresses[color][dressId][2];
 		session.beginDialog('/processOrder');
 	}
 ]);
@@ -325,7 +326,7 @@ bot.dialog('/processOrder', [
 		if(results.response){
 			var answer = results.response.entity;
 			if(answer === "Yes"){
-				session.send("Great. Your %s order has been paid for and will be sent shortly");
+				session.send("Great. Your %s order has been paid for and will be sent shortly", session.userData.orderName);
 			} else{
 				session.endDialog("Oh OK. Maybe I can help you get some other thing");
 			}
@@ -339,10 +340,10 @@ bot.dialog('/getLocation', [
 		builder.Prompts.text(session, "Please enter your current address");
 	},
 	function(session, results){
-		if(response.results){
-			session.userData.location = results.response.entity;
-			session.endDialog("Thank you");
+		if(results.response){
+			session.userData.location = results.response;
 		}
+        session.endDialog("Thank you");
 	}
 ]);
 
