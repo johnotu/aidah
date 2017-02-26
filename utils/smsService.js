@@ -16,7 +16,7 @@ exports.sms = {
 		client.messages.create({
 			to: phone,
 			from: '+16466634289',
-			body: 'Hi, your Aidah verification code is '+ code
+			body: 'Your order (# ' + code + ') has been processed and will reach you in 48hrs. Thank you for using Aidah.'
 		}, function(err, message){
 			console.log(message.sid);
 		});

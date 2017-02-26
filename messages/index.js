@@ -6,6 +6,7 @@ var sms = require("../utils/smsService.js");
 var places = require("../utils/placesDb.json");
 var movies = require("../utils/moviesDB.json");
 var dresses = require("../utils/dressesDb.json");
+var shoes = require("../utils/shoesDb.json");
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -124,7 +125,6 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 ])
 .matches('GetDress', [
 	function(session, args, next){
-        session.userData.location = "20 Aluguntugui Street, East Legon, Accra";
 		var dressEntity = builder.EntityRecognizer.findEntity(args.entities, 'dress');
 		var colorEntity = builder.EntityRecognizer.findEntity(args.entities, 'color');
 		if(dressEntity){
@@ -132,13 +132,13 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 				session.userData.favColor = colorEntity.entity;
 				session.beginDialog('/getDress');
 			} else{
-				builder.Prompts.text(session, 'What color of dress would you like?');
+				builder.Prompts.text(session, 'Sorry I didn\'t quite get the color. What color of dress would you like?');
 			}
 		}
 	},
 	function(session, results){
 		if(results.response){
-			session.userData.favColor = results.response.entity;
+			session.userData.favColor = results.response;
 			session.beginDialog('/getDress');
 		}
 	}
@@ -150,31 +150,15 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
 bot.dialog('/', [
     (session, next) => {
         session.userData.name = session.message.user.name.split(' ')[0];
-        session.send('Hello %s! My name is Aidah. I can help you find places for anything', session.userData.name);
+        //session.userData.name = "Nancy";
+        session.userData.location = "20 Aluguntugui Street, East Legon, Accra";
+        session.userData.shoeSize = 42;
+        session.userData.phoneNumber = "+233264737357";
+        session.send('Hello %s! My name is Aidah. I can help you find pizza places and get movie tickets in Accra', session.userData.name);
         session.beginDialog('/intents');
     }   
 ]);
-/* Location dialog @TODO check why it has errors
-bot.dialog('/getlocation', [
-    function(session){
-        var options = {
-            prompt: 'I need to know your location so I can serve you better',
-            useNativeControl: true,
-            reverseGeocode: true,
-            requiredFields:
-                locationDialog.LocationRequiredFields.streetAddress |
-                locationDialog.LocationRequiredFields.region |
-                locationDialog.LocationRequiredFields.country
-        };
-        locationDialog.getLocation(session, options);
-    },
-    function(session, results){
-        if(results.response){
-            session.userData.location = results.response;
-        }
-    }
-]);
-*/
+
 bot.dialog('/getMovies', [
    function(session){
        session.send('These are the movies currently showing at Silverbird Cinema, Accra Mall ...');
@@ -242,7 +226,7 @@ bot.dialog('/getDress', [
 	},
 	function(session, results){
 		session.sendTyping();
-		session.send("Kindly select from these fine options ...");
+		session.send('Kindly select from these fine options ...');
 		session.sendTyping();
 		var choicePriceRange = results.response.entity;
 		var color = session.userData.favColor;
@@ -261,7 +245,7 @@ bot.dialog('/getDress', [
 									.tap(builder.CardAction.showImage(session, dresses[color][i][4])),
 							])
 							.buttons([
-								builder.CardAction.imBack(session, dresses[color][i][0], "Select")
+								builder.CardAction.imBack(session, dresses[color][i][0], 'Select')
 							])
 					);
 					selectionArr.push(dresses[color][i][0]);
@@ -273,10 +257,10 @@ bot.dialog('/getDress', [
 
 			builder.Prompts.choice(session, dressCarousel, selectionArr);
 		} else {
-			session.endDialog("So sorry %s, John hasn't taught me %s colored dresses yet", session.userData.name, session.userData.favColor);
+			session.endDialog('So sorry %s, I don\'t yet have %s dresses in my store. They\'s coming soon though', session.userData.name, session.userData.favColor);
 		}
 	},
-	function(session, results){
+	function(session, results, next){
 		var dressName = results.response.entity;
 		var color = session.userData.favColor;
 		var dressId = 0;
@@ -287,64 +271,86 @@ bot.dialog('/getDress', [
 		}
 		session.userData.orderName = dressName;
 		session.userData.orderPrice = dresses[color][dressId][2];
-		session.beginDialog('/processOrder');
-	}
+        session.userData.orderStore = dresses[color][dressId][1];
+        session.userData.orderCategory = 'dress';
+        next();
+		
+	},
+    function(session){
+        if(session.userData.location){
+            var msg = 'I suppose you want the order delivered to ' + session.userData.location + '?';
+            builder.Prompts.choice(session, msg, "Yes|No");
+        }
+    },
+    function(session, results){
+        var answer = results.response.entity;
+        if(answer === "Yes"){
+            session.userData.orderDeliveryAddress = session.userData.location;
+            session.beginDialog('/confirmOrder');
+        } else{
+            session.beginDialog('/getAddress');
+        }
+    },
+    function(session, results){
+        session.userData.orderDeliveryAddress = results.response;
+        session.beginDialog('/confirmOrder');
+    }
 ]);
 
-bot.dialog('/processOrder', [
+
+bot.dialog('/confirmOrder', [
 	function(session){
-		session.sendTyping();
-		if(session.userData.location){
-			var msg = "Would you want the order delivered to " + session.userData.location + "?";
-			builder.Prompts.choice(session, msg, "Yes|No");
-		} else{
-			session.send("Looks like I don't have your address on record. Can you say where the order should be delivered?");
-			session.beginDialog('/getLocation');
-			var msg = "Would you want the order delivered to " + session.userData.location + "?";
-			builder.Prompts.choice(session, msg, "Yes|No");
-		}
-	},
-	function(session, results, next){
-		if(results.response){
-			var answer = results.response.entity;
-			if(answer === "Yes"){
-				session.userData.orderDeliveryLocation = session.userData.location;
-				next();
-			} else{
-				session.beginDialog('/getLocation');
-				session.userData.orderDeliveryLocation = session.userData.location;
-				next();
-			}
-		}
-	},
-	// Confirm payment for order name, price and delivery address
-	function(session){
-		var msg = "Please confirm that I should pay for " + session.userData.orderName + " for " + session.userData.orderPrice + " to be delivered to " + session.userData.orderDeliveryLocation;
+		var msg = 'Please confirm that I should pay ' + session.userData.orderPrice + ' for ' + session.userData.orderName + ' from ' + session.userData.orderStore + " to be delivered to " + session.userData.orderDeliveryAddress;
 		builder.Prompts.choice(session, msg, "Yes|No");
 	},
 	function(session, results){
-		if(results.response){
-			var answer = results.response.entity;
-			if(answer === "Yes"){
-				session.send("Great. Your %s order has been paid for and will be sent shortly", session.userData.orderName);
-			} else{
-				session.endDialog("Oh OK. Maybe I can help you get some other thing");
-			}
+		var answer = results.response.entity;
+		if(answer === "Yes"){
+            session.userData.orderNumber = sms.sms.getCode();
+            //enable to go live
+            //sms.sms.sendCode(session.userData.phoneNumber, session.userData.orderNumber);
+			session.send('Congratulations %s. Your %s order (# %s) has been processed and confirmation sent in an SMS to your phone. You can expect to receive your order within 48hrs.', session.userData.name, session.userData.orderName, session.userData.orderNumber);
+            //session.beginDialog('/recommend');
+            session.beginDialog('/intents');
+		} else{
+			session.send("Oh OK. Maybe I can help you get some other thing");
+            session.beginDialog('/intents');
 		}
 	}
 ]);
 
-bot.dialog('/getLocation', [
+bot.dialog('/getAddress', [
 	function(session){
 		session.sendTyping();
 		builder.Prompts.text(session, "Please enter your current address");
 	},
 	function(session, results){
-		if(results.response){
-			session.userData.location = results.response;
-		}
-        session.endDialog("Thank you");
+        session.endDialogWithResult(results);
 	}
+]);
+
+bot.dialog('/recommend', [
+    function(session){
+        if(session.userData.orderCategory === 'dress'){
+            var msg = ('Would you like a shoe to go with your %s dress?', session.userData.favColor);
+            builder.Prompts.choice(session, msg, "Yes|No");
+        }
+    },
+    function(session, results){
+        var answer = results.response.entity;
+        if(answer === "Yes"){
+            session.beginDialog('/getShoe');
+        } else {
+            session.endDialog("Ok %s, maybe I can help you with something else", session.userData.name);
+            session.beginDialog('/');
+        }
+    }
+]);
+
+bot.dialog('/getShoe', [
+    function(session){
+        
+    }
 ]);
 
 bot.dialog('/profile', [
@@ -426,7 +432,7 @@ bot.dialog('/chooseplace', [
             session.send(places[session.userData.ent][id][0]);
         }
     }
-])
+]);
 
 bot.dialog('/intents', intents);
 
