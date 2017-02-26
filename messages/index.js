@@ -354,13 +354,13 @@ bot.dialog('/getShoes', [
     function(session){
         switch(session.userData.favColor){
             case 'blue':
-                session.dialogData.shoeColor = 'blue';
+                session.dialogData.shoeColor = 'red';
                 break;
             case 'black':
                 session.dialogData.shoeColor = 'red';
                 break;
             case 'red':
-                session.dialogData.shoeColor = 'black';
+                session.dialogData.shoeColor = 'blue';
                 break;
             default:
                 session.dialogData.shoeColor = 'black';
