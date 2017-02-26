@@ -1,0 +1,197 @@
+{
+	"burger": [
+		[
+			"Burger and Relish",
+			"Corner 14th Lane, Accra",
+			"region of burger store 1",
+			"+233540121356",
+			"website of burger store 1",
+			"email of burger store 1",
+			"http://www.accraexpat.com/images/files/directory/1421677398_burger%20selection%202%20listing.jpg",
+			0
+		],
+		[
+			"The Counter Burger",
+			"Accra Mall, Accra",
+			"region of burger store 2",
+			"+233546855540",
+			"website of burger store 2",
+			"email of burger store 2",
+			"http://2.bp.blogspot.com/-M4RePBSszRE/U2upETQML6I/AAAAAAAAFyk/yZzlVqQttzI/s1600/The-Counter---Main-Image.png",
+			0
+		],
+		[
+			"Coco Lounge",
+			"Stanbic Heights Corner, Accra",
+			"region of burger store 3",
+			"+233244222202",
+			"website of burger store 3",
+			"email of burger store 3",
+			"http://www.burgerweekly.com/wp-content/uploads/2015/12/Coco-Lounge-Burger.jpg",
+			0
+		]		
+	],
+	"pizza": [
+		[
+			"Eddys Pizza",
+			"66 Ring Rd Central, Accra",
+			"region of pizza store 1",
+			"+233264133397",
+			"website of pizza store 1",
+			"email of pizza store 1",
+			"http://www.ghanayello.com/img/gh/e/1429286630-58-eddy-s-pizza.jpg",
+			0
+		],
+		[
+			"Mamma Mia Pizzeria",
+			"8th Ln, Accra",
+			"region of pizza store 2",
+			"+233244264151",
+			"website of pizza store 2",
+			"email of pizza store 2",
+			"https://media-cdn.tripadvisor.com/media/photo-s/03/07/cf/5a/mamma-mia.jpg",
+			0
+		],
+		[
+			"Papa's Pizza, East Legon",
+			"Freetown Avenue",
+			"region of pizza store 3",
+			"+233206368703",
+			"website of pizza store 3",
+			"email of pizza store 3",
+			"http://mycityaccra.com/wp-content/uploads/2013/04/papas.jpg",
+			0
+		]
+	],
+	"coffee": [
+		[
+			"Cuppa Cappuccino",
+			"6 Third Cl, Accra",
+			"region of coffee store 1",
+			"+233248204441",
+			"website of coffee store 1",
+			"email of coffee store 1",
+			"https://media-cdn.tripadvisor.com/media/photo-s/04/d0/19/8b/cuppa-cappuccino.jpg",
+			0
+		],
+		[
+			"Café Kwae",
+			"One Airport Square, Airport City, Accra",
+			"region of coffee store 2",
+			"+233204004010",
+			"website of coffee store 2",
+			"email of coffee store 2",
+			"https://static1.squarespace.com/static/56113bb3e4b042344e793a78/56361eb3e4b07e2dec83269f/56f85126e707eb94f9d5b178/1459114305906/cafe+kwae+food+-+stevenaduseiphotography-9.jpg?format=500w",
+			0
+		],
+		[
+			"Labone Coffee Shop",
+			"Olooti Rd, Accra",
+			"region of cpffee store 3",
+			"+233302761491",
+			"website of coffee store 3",
+			"email of coffee store 3",
+			"https://mytablenumbersdotcom.files.wordpress.com/2016/12/adventure-time-cartoon-chocolate-coffee-favim-com-1197766.jpg?w=1088",
+			0
+		]
+<<<<<<< HEAD
+	],
+	"jollof": [
+		[
+			"Aristocrat Restaurant",
+			"East Legon, Lagos Avenue",
+			"region of coffee store 2",
+			"+233246243241",
+			"website of coffee store 1",
+			"email of coffee store 1",
+			"http://www.businesslist.com.ng/img/ng/k/1452895473-51-southern-cousin-catering-services.jpg",
+			0
+		],
+		[
+			"Tasty Restaurant & Bar",
+			"East Legon",
+			"region of coffee store 2",
+			"+233267456484",
+			"website of coffee store 2",
+			"email of coffee store 2",
+			"http://res.cloudinary.com/big-cabal/image/upload/w_800,f_auto,fl_lossy,q_auto/v1472325450/i5torwhvyijwxpn88mr8.jpg",
+			0
+		],
+		[
+			"Frankies",
+			"Osu",
+			"region of coffee store 3",
+			"+233302773567",
+			"website of coffee store 3",
+			"email of coffee store 3",
+			"https://motivar2.files.wordpress.com/2015/06/wpid-jollof-rice1.jpg",
+			0
+		]
+	],
+	"fried rice": [
+		[
+			"Chop Bar",
+			"East Legon, A&C Mall",
+			"",
+			"+233248253481",
+			"website of coffee store 1",
+			"email of coffee store 1",
+			"http://www.dnrrestaurant.com/directory/menu/chicken/dnr%20486.JPG",
+			0
+		],
+		[
+			"Koffee Lounge",
+			"East Legon",
+			"region of coffee store 2",
+			"+233272384395",
+			"website of coffee store 2",
+			"email of coffee store 2",
+			"https://i.ytimg.com/vi/v7K8pgtLeWA/maxresdefault.jpg",
+			0
+		],
+		[
+			"Papaye Restaurant",
+			"Osu",
+			"region of cpffee store 3",
+			"+233302256391",
+			"website of coffee store 3",
+			"email of coffee store 3",
+			"http://img.21food.com/20110609/product/1305566439109.jpg",
+			0
+		]
+	],
+	"waakye": [
+		[
+			"Fafa Waakye Special",
+			"East Airport",
+			"region of coffee store 1",
+			"+233247673981",
+			"website of coffee store 1",
+			"email of coffee store 1",
+			"http://ikokobuka.com/wp-content/uploads/2016/06/Ghanaian-Waakye.png",
+			0
+		],
+		[
+			"Adiza Restaurant",
+			"New Town",
+			"region of coffee store 2",
+			"+233204004010",
+			"website of coffee store 2",
+			"email of coffee store 2",
+			"http://cd1.peacefmonline.com/photos/news/201308/34418453_195630.jpg",
+			0
+		],
+		[
+			"Auntie Muni",
+			"Osu",
+			"region of cffee store 3",
+			"+233302761491",
+			"website of coffee store 3",
+			"email of coffee store 3",
+			"http://www.businessworldghana.com/wp-content/uploads/2016/07/waakye-in-leaf.jpg",
+			0
+		]
+=======
+>>>>>>> c2cb57be403e3c33485f2b026fd74c4a554b52b1
+	]
+}
