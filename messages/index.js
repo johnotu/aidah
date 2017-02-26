@@ -309,9 +309,9 @@ bot.dialog('/confirmOrder', [
             session.userData.orderNumber = sms.sms.getCode();
             //enable to go live
             //sms.sms.sendCode(session.userData.phoneNumber, session.userData.orderNumber);
-			session.send('Congratulations %s. Your %s order (# %s) has been processed and confirmation sent in an SMS to your phone. You can expect to receive your order within 48hrs.', session.userData.name, session.userData.orderName, session.userData.orderNumber);
-            //session.beginDialog('/recommend');
-            session.beginDialog('/intents');
+			session.send('Congratulations %s. Your %s order (#%s) has been processed and confirmation sent in an SMS to your phone. You can expect to receive your order within 48hrs.', session.userData.name, session.userData.orderName, session.userData.orderNumber);
+            session.beginDialog('/recommend');
+            //session.beginDialog('/intents');
 		} else{
 			session.send("Oh OK. Maybe I can help you get some other thing");
             session.beginDialog('/intents');
@@ -331,25 +331,112 @@ bot.dialog('/getAddress', [
 
 bot.dialog('/recommend', [
     function(session){
+        session.sendTyping();
         if(session.userData.orderCategory === 'dress'){
-            var msg = ('Would you like a shoe to go with your %s dress?', session.userData.favColor);
+            var msg = 'Would you like a shoe to go with your ' + session.userData.favColor + 'dress?';
+            builder.Prompts.choice(session, msg, "Yes|No");
+        } else {
+            session.beginDialog('/');
+        }
+    },
+    function(session, results){
+        var answer = results.response.entity;
+        if(answer === "Yes"){
+            session.beginDialog('/getShoes');
+        } else if(answer == "No"){
+            session.send("Ok %s, maybe I can help you with something else", session.userData.name);
+            session.beginDialog('/');
+        }
+    }
+]);
+
+bot.dialog('/getShoes', [
+    function(session){
+        switch(session.userData.favColor){
+            case 'blue':
+                session.dialogData.shoeColor = 'blue';
+                break;
+            case 'black':
+                session.dialogData.shoeColor = 'red';
+                break;
+            case 'red':
+                session.dialogData.shoeColor = 'black';
+                break;
+            default:
+                session.dialogData.shoeColor = 'black';
+        }
+        builder.Prompts.choice(session, 'Like how much would you want to spend on a shoe?', ["GHC50 - GHC100", "GHC101 - GHC200", "GHC201 - GHC500"]);
+    },
+    function(session, results){
+        var choicePriceRange = results.response.entity;
+        session.sendTyping();
+		session.send('Select the one you like best ...');
+		session.sendTyping();
+		var color = session.dialogData.shoeColor;
+		var selectShoes = [];
+		var selectionArr = [];
+		if(color in shoes){
+			for(var i=0; i<shoes[color].length; i++){
+				if(shoes[color][i][3] === choicePriceRange){
+                    var sub = shoes[color][i][2] + " | " + shoes[color][i][1];
+					selectShoes.push(
+						new builder.HeroCard(session)
+							.title(dresses[color][i][0])
+							.subtitle(sub)
+							.images([
+								builder.CardImage.create(session, shoes[color][i][4])
+									.tap(builder.CardAction.showImage(session, shoes[color][i][4])),
+							])
+							.buttons([
+								builder.CardAction.imBack(session, shoes[color][i][0], 'Select')
+							])
+					);
+					selectionArr.push(shoes[color][i][0]);
+				}
+			}
+            var shoesCarousel = new builder.Message(session)
+					.attachmentLayout(builder.AttachmentLayout.carousel)
+					.attachments(selectShoes);
+
+			builder.Prompts.choice(session, shoesCarousel, selectionArr);
+		} else {
+			session.endDialog('So sorry %s, I don\'t yet have %s shoes in my store. They\'s coming soon though', session.userData.name, session.dialogData.shoeColor);
+		}
+	},
+	function(session, results, next){
+		var shoeName = results.response.entity;
+		var color = session.dialogData.shoeColor;
+		var shoeId = 0;
+		for(var i=0; i<shoes[color].length; i++){
+			if(shoes[color][i][0] === shoeName){
+				shoeId = i;
+			}
+		}
+		session.userData.orderName = shoeName;
+		session.userData.orderPrice = shoes[color][shoeId][2];
+        session.userData.orderStore = shoes[color][shoeId][1];
+        session.userData.orderCategory = 'shoe';
+        next();
+		
+	},
+    function(session){
+        if(session.userData.location){
+            var msg = 'I suppose you want the order delivered to ' + session.userData.location + '?';
             builder.Prompts.choice(session, msg, "Yes|No");
         }
     },
     function(session, results){
         var answer = results.response.entity;
         if(answer === "Yes"){
-            session.beginDialog('/getShoe');
-        } else {
-            session.endDialog("Ok %s, maybe I can help you with something else", session.userData.name);
-            session.beginDialog('/');
+            session.userData.orderDeliveryAddress = session.userData.location;
+            session.beginDialog('/confirmOrder');
+        } else{
+            session.beginDialog('/getAddress');
         }
-    }
-]);
-
-bot.dialog('/getShoe', [
-    function(session){
-        
+    },
+    function(session, results){
+        session.userData.orderDeliveryAddress = results.response;
+        session.beginDialog('/confirmOrder');
     }
 ]);
 
