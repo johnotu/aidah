@@ -96,7 +96,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
         for(var i=0; i<places[session.dialogData.mealType].length; i++){
             storeNames.push(places[session.dialogData.mealType][i][0]);
         }
-        builder.Prompts.choice(session, 'Which of these places is your favourite?', storeNames, {
+        builder.Prompts.choice(session, 'Oh you must be hungry. Which of these places is your favourite?', storeNames, {
             maxRetries: 2,
             retryPrompt: 'Oops, I can only show you these places for now, please pick one of them'
         });
@@ -167,7 +167,7 @@ bot.dialog('/getMovies', [
        var selectionArr = [];
        for(var i=0; i<movies.movie.length; i++){
            cards.push(
-                new builder.ThumbnailCard(session)
+                new builder.HeroCard(session)
                     .title(movies.movie[i][0])
                     .subtitle(movies.movie[i][1])
                     
@@ -220,8 +220,7 @@ bot.dialog('/getMovies', [
 bot.dialog('/getDress', [
 	function(session){
 		session.sendTyping();
-		session.send("Oh nice! I'm sure you'll look good in a %s dress", session.userData.favColor);
-		session.send("I have some suggesstions but...");
+		session.send("Oh great! I have seen some nice %s dresses but...", session.userData.favColor);
 		builder.Prompts.choice(session, 'How much would you like to spend on it?', ["GHC50 - GHC100", "GHC101 - GHC200", "GHC201 - GHC500"]);
 	},
 	function(session, results){
@@ -333,7 +332,7 @@ bot.dialog('/recommend', [
     function(session){
         session.sendTyping();
         if(session.userData.orderCategory === 'dress'){
-            var msg = 'Would you like a shoe to go with your ' + session.userData.favColor + 'dress?';
+            var msg = 'Would you like a shoe to go with your ' + session.userData.favColor + ' dress?';
             builder.Prompts.choice(session, msg, "Yes|No");
         } else {
             session.beginDialog('/');
@@ -354,12 +353,15 @@ bot.dialog('/getShoes', [
     function(session){
         switch(session.userData.favColor){
             case 'blue':
-                session.dialogData.shoeColor = 'red';
+                session.dialogData.shoeColor = 'black';
                 break;
             case 'black':
-                session.dialogData.shoeColor = 'red';
+                session.dialogData.shoeColor = 'white';
                 break;
             case 'red':
+                session.dialogData.shoeColor = 'blue';
+                break;
+            case 'white':
                 session.dialogData.shoeColor = 'blue';
                 break;
             default:
