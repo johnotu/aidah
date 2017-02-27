@@ -116,9 +116,6 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
             .images([
                 builder.CardImage.create(session, places[session.dialogData.mealType][choicePlaceId][6])
             ]);
-/*            .buttons([
-                builder.CardAction.call(session, '+233264537375', 'Call')
-            ]);*/
         var msg = new builder.Message(session).addAttachment(card);
         session.send(msg);
     }
@@ -154,7 +151,7 @@ bot.dialog('/', [
         session.userData.location = "20 Aluguntugui Street, East Legon, Accra";
         session.userData.shoeSize = 42;
         session.userData.phoneNumber = "+233264737357";
-        session.send('Hello %s! My name is Aidah. I can help you find pizza places and get movie tickets in Accra', session.userData.name);
+        //session.send('Hello %s! My name is Aidah. I can help you order and shop for things in Accra', session.userData.name);
         session.beginDialog('/intents');
     }   
 ]);
@@ -202,16 +199,21 @@ bot.dialog('/getMovies', [
    },
    function(session, results){
        session.dialogData.movieTime = results.response.entity;
-       var msg = 'Please confirm you want to see ' + session.dialogData.movie + 'on ' + session.dialogData.movieTime;
+       var msg = 'Please confirm you want to see ' + session.dialogData.movie + ' on ' + session.dialogData.movieTime;
        builder.Prompts.choice(session, msg, "Yes|No");
    },
    function(session, results){
        if(results.response){
            var answer = results.response.entity;
            if(answer === "Yes"){
-               session.endDialog("Thank you, your ticket is on the way");
+               session.userData.orderNumber = sms.sms.getCode();
+               sms.sms.sendCode(session.userData.phoneNumber, session.userData.orderNumber);
+               session.send('Congratulations %s. Your ticket (#%s) has been reserved and confirmation sent in an SMS to your phone.', session.userData.name, session.userData.orderNumber);
+               session.beginDialog('/intents');
+               //session.endDialog("Thank you, your ticket is on the way");
            } else {
                session.endDialog("Oh snap! Maybe I can help you with something else");
+               session.beginDialog('/intents');
            }
        }
    }
@@ -307,7 +309,7 @@ bot.dialog('/confirmOrder', [
 		if(answer === "Yes"){
             session.userData.orderNumber = sms.sms.getCode();
             //enable to go live
-            //sms.sms.sendCode(session.userData.phoneNumber, session.userData.orderNumber);
+            sms.sms.sendCode(session.userData.phoneNumber, session.userData.orderNumber);
 			session.send('Congratulations %s. Your %s order (#%s) has been processed and confirmation sent in an SMS to your phone. You can expect to receive your order within 48hrs.', session.userData.name, session.userData.orderName, session.userData.orderNumber);
             session.beginDialog('/recommend');
             //session.beginDialog('/intents');
@@ -441,6 +443,14 @@ bot.dialog('/getShoes', [
         session.beginDialog('/confirmOrder');
     }
 ]);
+
+/*
+bot.dialog('/pay', [
+    function(session){
+        
+    }
+])
+*/
 
 bot.dialog('/profile', [
     (session, args, next) => {
