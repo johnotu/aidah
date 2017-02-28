@@ -7,7 +7,7 @@ var welcome = ['Hello ', 'Yo ;) ', 'Hey, nice to see you ', 'Hi ', 'Welcome '];
 
 exports.greeting = {
 	welcome: function(name){
-		return random(welcome) + name;
+		return random(welcome) + name + '. How can I be of help?';
 	},
 	
 	farewell: function(name){

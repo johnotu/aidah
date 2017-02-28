@@ -60,6 +60,9 @@
 			"website of pizza store 3",
 			"email of pizza store 3",
 			"http://mycityaccra.com/wp-content/uploads/2013/04/papas.jpg",
+			["Margherita", "Chicken delight", "Chicken supreme", "Vegetarian lite", "Hawaiian", "Pepperoni passion", "Farm house", "Kiss and cuddle", "Hugs and kisses", "Sweet moments", "Fire starter", "Papa's love", "Soul mates"],
+			["8", "10", "12"],
+			["beef", "chicken", "onions", "fresh tomatoes", "pepper", "extra cheese", "sausage", "pineapple", "pepperoni"],
 			0
 		]
 	],

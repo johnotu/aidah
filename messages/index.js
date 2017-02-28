@@ -223,6 +223,7 @@ bot.dialog('/getDress', [
 	function(session){
 		session.sendTyping();
 		session.send("Oh great! I have seen some nice %s dresses but...", session.userData.favColor);
+        session.sendTyping();
 		builder.Prompts.choice(session, 'How much would you like to spend on it?', ["GHC50 - GHC100", "GHC101 - GHC200", "GHC201 - GHC500"]);
 	},
 	function(session, results){
@@ -385,7 +386,7 @@ bot.dialog('/getShoes', [
                     var sub = shoes[color][i][2] + " | " + shoes[color][i][1];
 					selectShoes.push(
 						new builder.HeroCard(session)
-							.title(dresses[color][i][0])
+							.title(shoes[color][i][0])
 							.subtitle(sub)
 							.images([
 								builder.CardImage.create(session, shoes[color][i][4])
@@ -441,6 +442,62 @@ bot.dialog('/getShoes', [
     function(session, results){
         session.userData.orderDeliveryAddress = results.response;
         session.beginDialog('/confirmOrder');
+    }
+]);
+
+bot.dialog('/getPizza', [
+    function(session){
+        session.sendTyping();
+        session.send('Pizzaaaa yay ^_^ !');
+        session.sendTyping();
+        var msg = 'Should I pick your regular type ' + session.userData.pizzaType + ' and size ' + session.userData.pizzaSize + ' inches from your favourite place ' + session.userData.pizzaPlace + '?';
+        builder.Prompts.choice(session, msg, "Yes|No|Cancel");
+    },
+    function(session, results, next){
+        var answer = results.response.entity;
+        if(answer === "Yes"){
+            //session.userData.pizzaChoiceId = places.pizza[7].indexOf(session.userData.pizzaType);
+            session.userData.orderStore = session.userData.pizzaPlace;
+            session.userData.orderName = session.userData.pizzaType + session.userData.pizzaSize;
+            session.userData.orderPrice = "GHC25";
+            next();
+        } else if(answer === "No"){
+            session.beginDialog('/choosePizzaPlace');
+            session.beginDialog('/choosePizzaType');
+            session.beginDialog('/choosePizzaSize');
+            next();
+        } else{
+            session.beginDialog('/intents');
+        }
+    },
+    function(session){
+        if(session.userData.location){
+            var msg = 'I\'m going to deliver your pizza to ' + session.userData.location + '. Is that OK?';
+            builder.Prompts.choice(session, msg, "Yes|No");
+        }
+    },
+    function(session, results){
+        var answer = results.response.entity;
+        if(answer === "Yes"){
+            session.userData.orderDeliveryAddress = session.userData.location;
+            session.beginDialog('/confirmOrder');
+        } else{
+            session.beginDialog('/getAddress');
+        }
+    },
+    function(session, results){
+        session.userData.orderDeliveryAddress = results.response;
+        session.beginDialog('/confirmOrder');
+    }
+]);
+
+bot.dialog('/choosePizzaType', [
+    function(session){
+        session.sendTyping();
+        builder.Prompts.choice(session, 'Which pizza type would you like?', places.pizza[2][7]);
+    },
+    function(session, results){
+        session.userData.pizzaType = results.response.entity;
     }
 ]);
 
