@@ -1,122 +1,507 @@
 {
 	"red": [
 		[
-			"Revamped Sleeveless Bodycon Dress ",
-			"Jumia",
-			"GHC220",
-			"GHC201 - GHC500",
-			"https://static.jumia.com.gh/p/revamped-0656-48044-1-catalog_grid_3.jpg"
-		],
-		[
-			"Short Sleeve Pencil Dress with Belt",
+			"Short Sleeve Pencil Dress with Belt ",
 			"Jumia",
 			"GHC120",
 			"GHC101 - GHC200",
-			"https://static.jumia.com.gh/p/nice-forever-3262-95224-1-catalog_grid_3.jpg"
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227927/composite_14882095565731_kmr17v.jpg"
 		],
 		[
-			"Hot red sexy sleeveless plung midi dress",
+			"Glitter Long Sleeve Mini",
 			"Jumia",
-			"GHC110",
-			"GHC101 - GHC200",
-			"https://static-market.jumia.com.gh/p/other_1-6163-730372-1-zoom.jpg"
+			"GHC290",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488209061/image3_stitich_vaszpg.jpg"
 		],
 		[
-			"Badgley Mischka Womens It Dress Blouson Gown ",
-			"Ahonya",
+			"Revamped Sleeveless Bodycon",
+			"Jumia",
+			"GHC220",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227927/composite_14882097843632_dbwoav.jpg"
+		],
+		[
+			"Connected Sequin Lace Detail Drape",
+			"Jumia",
+			"GHC170",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227927/composite_14882107718417_xxexao.jpg"
+		],
+		[
+			"Revamped Mesh Inset Bodycon",
+			"Jumia",
 			"GHC384",
 			"GHC201 - GHC500",
-			"https://ahonya.com/s/ref=sr_fsl_cat_softlines_brand_ban_sa?rh=n%3A7141123011%2Cn%3A1045024%2Cn%3A1040660%2Ck%3Ared+dress%2Cp_n_feature_eighteen_browse-bin%3A14630392011&keywords=red+dress&ie=UTF8&qid=1487888814"
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227927/composite_14882105624067_sllxh7.jpg"
+		],
+		[
+			"Chameleon Floral Print Dress with Belt",
+			"Jumia",
+			"GHC80",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227927/composite_14882102146932_lppga5.jpg"
+		],
+		[
+			"Sequin Sleeveless Sheath",
+			"Jumia",
+			"GHC184",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227927/composite_14882094588827_kizywl.jpg"
+		],
+		[
+			"Scarlett Open Back Cap Sleeve Dress",
+			"Jumia",
+			"GHC97",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227927/composite_14882113879572_zkchb9.jpg"
+		],
+		[
+			"Label Kaftan Maxi Dress ",
+			"Jumia",
+			"GHC270",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227927/composite_14882112125773_liirmc.jpg"
+		],
+		[
+			"Embroidered Native Elbow Sleeve Dress",
+			"Jumia",
+			"GHC145",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227927/composite_14882116345350_azt71r.jpg"
+		],
+		[
+			"Pleated Sleeveless Mini Dress",
+			"Jumia",
+			"GHC95",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227927/composite_14882109268867_yq1vba.jpg"
+		],
+		[
+			"Flutter Sleeve Peplum Dress",
+			"Jumia",
+			"GHC192",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227927/composite_14882117373417_zsdcaw.jpg"
+		],
+		[
+			"Long Sleeve Flare Dress",
+			"Jumia",
+			"GHC75",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227927/composite_14882118399906_wkdj81.jpg"
+		],
+		[
+			"Isio Frill Hem Dress",
+			"Jumia",
+			"GHC104",
+			"GHC101 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227928/composite_14882124122629_yxv2mr.jpg"
+		],
+		[
+			"Teni Pleated Dress",
+			"Jumia",
+			"GHC50",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227928/composite_14882119293681_xexzr7.jpg"
+		],
+		[
+			"African Print Detail Dress",
+			"Jumia",
+			"GHC60",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227928/composite_14882125205218_lak6hz.jpg"
+		],
+		[
+			"Lace 3/4 Sleeve Bodycon Dress",
+			"Jumia",
+			"GHC194",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488227928/composite_14882134933734_buk6yz.jpg"
 		]
 	],
 		"black": [
 		[
-			"Black Jersey Bodycon Dress",
+			"Lace Gathered Flare Dress ",
 			"Jumia",
-			"GHC100",
-			"GHC101 - GHC200",
-			"https://static-market.jumia.com.gh/p/other_1-1618-740962-1-product.jpg"
-		],
-		[
-			"Sleeve Black Lace Flare A-line Dress",
-			"Ahonya",
-			"GHC49",
+			"GHC89",
 			"GHC50 - GHC100",
-			"https://images-na.ssl-images-amazon.com/images/I/41jiIWV11dL._AC_UL260_SR200,260_.jpg"
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228773/lace-gathered.jpg"
 		],
 		[
-			"Black Plunge Asymmetric Dress",
+			"Lisa Cape Dress",
+			"Jumia",
+			"GHC150",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228773/composite_14882137281462.jpg"
+		],
+		[
+			"Tonye Midi Dress",
+			"Jumia",
+			"GHC90",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228773/composite_14882138771331.jpg"
+		],
+		[
+			" Faux Leather Spaghetti Strap Bustier Dress",
+			"Jumia",
+			"GHC250",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228773/composite_14882139742490.jpg"
+		],
+		[
+			"Neck Overlay Keyhole Dress",
+			"Jumia",
+			"GHC150",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228773/composite_14882143602090.jpg"
+		],
+		[
+			"Lace Embroidered Bodycon Dress",
+			"Jumia",
+			"GHC400",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228773/composite_14882147166070.jpg"
+		],
+		[
+			"Sleeveless Hi-Lo Maxi Dress ",
+			"Jumia",
+			"GHC320",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228774/composite_14882148357607.jpg"
+		],
+		[
+			" Cape Bodycon Mini Dress",
+			"Jumia",
+			"GHC300",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228774/composite_14882166263686.jpg"
+		],
+		[
+			"Studded Bodycon Mini Dress ",
+			"Jumia",
+			"GHC130",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228774/composite_14882188562917.jpg"
+		],
+		[
+			"Mesh Inset Flare Dress",
+			"Jumia",
+			"GHC199",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228774/composite_14882190089500.jpg"
+		],
+		[
+			"Floral Print Mesh Inset Bodycon Dress",
 			"Jumia",
 			"GHC100",
 			"GHC101 - GHC200",
-			"https://static-market.jumia.com.gh/p/other_1-5552-260962-1-product.jpg"
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228774/composite_14882190991092.jpg"
 		],
 		[
-			"Long Bridesmaid Dress with Lace Bodice Style",
-			"Ahonya",
-			"GHC179",
+			"Elbow Sleeve Sheath Dress",
+			"Jumia",
+			"GHC160",
 			"GHC101 - GHC200",
-			"https://images-na.ssl-images-amazon.com/images/I/31rih28CJaL._AC_SR160,200_.jpg"
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228774/composite_14882192479730.jpg"
+		],
+		[
+			"Sexy faux leather Bodycon Dress",
+			"Jumia",
+			"GHC200",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228775/composite_14882193318568.jpg"
+		],
+		[
+			"Asymmetrical Mini Dress",
+			"Jumia",
+			"GHC70",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228775/composite_14882213306227.jpg"
+		],
+		[
+			"Glitter Lace-Up Bodycon Dress",
+			"Jumia",
+			"GHC300",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228775/composite_14882217445530.jpg"
 		]
 	],
 		"white": [
 		[
-			"Off Shoulder bodycon dress",
+			"Mesh Inset Flare Dress",
 			"Jumia",
 			"GHC150",
 			"GHC101 - GHC200",
-			"https://static-market.jumia.com.gh/p/other_1-6621-966472-1-product.jpg"
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228278/red/composite_14882246034033.jpg"
 		],
 		[
-			"CREATIVELINE Malaika Ladies African Dress",
+			"Side Slit Bodycon Dress",
 			"Zoobashop",
 			"GHC107",
 			"GHC101 - GHC200",
-			"https://www.zoobashop.com/media/catalog/product/cache/1/thumbnail/300x330/9df78eab33525d08d6e5fb8d27136e95/m/a/malaika.jpg"
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228278/red/composite_14882231904352.jpg"
 		],
 		[
-			"Ladies Patterned Short Sleeves Shirt",
+			"African Print Detail Shirt Dress",
 			"Jumia",
-			"GHC50",
-			"GHC50 - GHC100",
-			"https://static-market.jumia.com.gh/p/other_1-6973-639652-1-product.jpg"		
+			"GHC200",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228278/red/composite_14882233869532.jpg"		
 		],
 		[
-			"Sexy Backless Spaghetti Strap Floral",
+			"African Print Detail 3/4 Dress",
 			"Ahonya",
-			"GHC59",
+			"GHC200",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228278/red/composite_14882248038009.jpg"
+		],
+		[
+			"Striped Cold Shoulder Sheath Dress",
+			"Jumia",
+			"GHC199",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228278/red/composite_14882232644623.jpg"		
+		],
+		[
+			"African Print Detail 3/4 Dress",
+			"Jumia",
+			"GHC200",
+			"GHC201 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228278/red/composite_14882246987560.jpg"		
+		],
+		[
+			"African Print Detail Tent Dress",
+			"Jumia",
+			"GHC190",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228279/red/composite_14882248641919.jpg"		
+		],
+		[
+			"African Print Detail Shirt Dress",
+			"Jumia",
+			"GHC90",
 			"GHC50 - GHC100",
-			"https://images-na.ssl-images-amazon.com/images/I/41895RO9cfL._AC_UL260_SR200,260_.jpg"
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228279/red/composite_14882250165390.jpg"		
+		],
+		[
+			"Turtle Neck Bodycon Dress",
+			"Jumia",
+			"GHC96",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228279/red/composite_14882265955076.jpg"		
+		],
+		[
+			"Sleeveless Sheath Dress",
+			"Jumia",
+			"GHC97",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228279/red/composite_14882252956402.jpg"		
+		],
+		[
+			"Polka Dot Bodycon Dress ",
+			"Jumia",
+			"GHC179",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228279/red/composite_14882251099702.jpg"		
+		],
+		[
+			"Label Lace Maxi Dress ",
+			"Jumia",
+			"GHC70",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228279/red/composite_14882252168902.jpg"		
+		],
+		[
+			"Bead Detail Sheath Dress",
+			"Jumia",
+			"GHC160",
+			"GHC101 - GHC20100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228280/red/composite_14882267179125.jpg"		
+		],
+		[
+			"Embroidered Native 3/4 Sleeve Dress",
+			"Jumia",
+			"GHC150",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228280/red/composite_14882269182508.jpg"		
+		],
+		[
+			"Long Sleeve Shirt Dress with Belt ",
+			"Jumia",
+			"GHC200",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228280/red/composite_14882270178436.jpg"		
+		],
+		[
+			"Cap Sleeve Sheath Dress ",
+			"Jumia",
+			"GHC90",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228280/red/composite_14882268016444.jpg"		
+		],
+		[
+			"Embroidered Native Short Sleeve Dress",
+			"Jumia",
+			"GHC150",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228280/red/composite_14882271056331.jpg"		
+		],
+		[
+			"Sleeveless Lace Dress",
+			"Jumia",
+			"GHC125",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228280/red/composite_14882271729713.jpg"		
+		],
+		[
+			"Embellished Sleeveless Maxi Dress",
+			"Jumia",
+			"GHC500",
+			"GHC201- GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228280/red/composite_14882273285253.jpg"		
+		],
+		[
+			"Sleeveless Bandage Bodycon Dress",
+			"Jumia",
+			"GHC100",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228280/red/composite_14882272639689.jpg"		
+		],
+		[
+			"Embroidered Native 3/4 Sleeve Dress",
+			"Jumia",
+			"GHC250",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228280/red/composite_14882276259018.jpg"		
+		],
+		[
+			"Floral Print Pleated Dress",
+			"Jumia",
+			"GHC90",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488228281/red/composite_14882274868942.jpg"		
 		]
 	],
 	"blue": [
 		[
-			"CREATIVELINE Makeda Ladies African Dress",
+			"Keyhole Neck Tulip Dress",
 			"Zoobashop",
-			"GHC107",
-			"GHC101 - GHC200",
-			"https://www.zoobashop.com/media/catalog/product/cache/1/thumbnail/300x330/9df78eab33525d08d6e5fb8d27136e95/m/a/makeda.jpg"
+			"GHC300",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231738/composite_14882290496467.jpg"
 		],
 		[
-			"Ladies Denim Long Sleeves Shirt Dress",
+			"Pleated Sleeveless Dress",
 			"Jumia",
-			"GHC120",
-			"GHC101 - GHC200",
-			"https://static-market.jumia.com.gh/p/jean-corcel-2687-402962-1-product.jpg"
+			"GHC70",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231739/composite_14882294287796.jpg"
 		],
 		[
-			"Long Blue Bodycon Dress",
+			"Native Sheath Dress ",
+			"Jumia",
+			"GHC130",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231739/composite_14882290248769.jpg"
+		],
+		[
+			"Front Zip Bodycon Dress ",
+			"Jumia",
+			"GHC240",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231739/composite_14882291181996.jpg"
+		],
+		[
+			"Long Sleeve Faux Wrap Dress",
+			"Jumia",
+			"GHC250",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231740/composite_14882293514010.jpg"
+		],
+		[
+			"African Print Sleeveless Flare Dress ",
+			"Jumia",
+			"GHC130",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231739/composite_14882289936897.jpg"
+		],
+		[
+			"Embroidered Native Elbow Sleeve Dress",
+			"Jumia",
+			"GHC150",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231739/composite_14882294882337.jpg"
+		],
+		[
+			"Sleeveless Pencil Dress",
 			"Jumia",
 			"GHC90",
 			"GHC50 - GHC100",
-			"https://static-market.jumia.com.gh/p/other_1-3006-409472-1-product.jpg"
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231739/composite_14882298607348.jpg"
 		],
 		[
-			"Ladies Sleeveless Dress With A Blazer",
+			"Belted Hi-Low Skirt Maxi Dress",
 			"Jumia",
-			"GHC200",
+			"GHC120",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231739/composite_14882297592434.jpg"
+		],
+		[
+			"Chevron Print Sheath Dress",
+			"Jumia",
+			"GHC120",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231740/composite_14882299706949.jpg"
+		],
+		[
+			"Kaftan Maxi Dress",
+			"Jumia",
+			"GHC240",
 			"GHC201 - GHC500",
-			"https://market.jumia.com.gh/ladies-sleeveless-dress-with-a-blazer-dark-blue-270978.html"
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231740/composite_14882300513486.jpg"
+		],
+		[
+			"Sleeve Lace Dress",
+			"Jumia",
+			"GHC460",
+			"GHC201 - GHC500",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231740/composite_14882302427592.jpg"
+		],
+		[
+			"Embroidered Native Elbow Sleeve Dress",
+			"Jumia",
+			"GHC140",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231740/composite_14882304724779.jpg"
+		],
+		[
+			"Elbow Sleeve Maxi Dress",
+			"Jumia",
+			"GHC90",
+			"GHC50 - GHC100",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231740/composite_14882303661124.jpg"
+		],
+		[
+			"Hi-Lo Bodycon Mini Dress",
+			"Jumia",
+			"GHC120",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231740/composite_14882305852843.jpg"
+		],
+		[
+			"Acid Wash Denim Mini Dress",
+			"Jumia",
+			"GHC70",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231741/composite_14882307254195.jpg"
+		],
+		[
+			"Cut-Out Back Lace Overlay Mini Dress",
+			"Jumia",
+			"GHC190",
+			"GHC101 - GHC200",
+			"http://res.cloudinary.com/dxdkjddi2/image/upload/v1488231741/composite_14882311718272.jpg"
 		]
 	]
 }
