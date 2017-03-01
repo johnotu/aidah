@@ -80,7 +80,8 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
         
         if(pizzaEntity){
             session.dialogData.mealType = 'pizza';
-            next({ response: pizzaEntity.entity });
+            session.beginDialog('/getPizza');
+            //next({ response: pizzaEntity.entity });
         } else if(burgerEntity){
             session.dialogData.mealType = 'burger';
             next({ response: burgerEntity.entity });
@@ -151,6 +152,9 @@ bot.dialog('/', [
         session.userData.location = "20 Aluguntugui Street, East Legon, Accra";
         session.userData.shoeSize = 42;
         session.userData.phoneNumber = "+233264737357";
+        session.userData.pizzaType = "Margherita";
+        session.userData.pizzaSize = "10";
+        session.userData.pizzaPlace = "Papa's Pizza, East Legon";
         //session.send('Hello %s! My name is Aidah. I can help you order and shop for things in Accra', session.userData.name);
         session.beginDialog('/intents');
     }   
@@ -200,14 +204,14 @@ bot.dialog('/getMovies', [
    function(session, results){
        session.dialogData.movieTime = results.response.entity;
        var msg = 'Please confirm you want to see ' + session.dialogData.movie + ' on ' + session.dialogData.movieTime;
-       builder.Prompts.choice(session, msg, "Yes|No");
+       builder.Prompts.choice(session, msg, "Yes|No|Cancel");
    },
    function(session, results){
        if(results.response){
            var answer = results.response.entity;
            if(answer === "Yes"){
                session.userData.orderNumber = sms.sms.getCode();
-               sms.sms.sendCode(session.userData.phoneNumber, session.userData.orderNumber);
+               //sms.sms.sendCode(session.userData.phoneNumber, session.userData.orderNumber);
                session.send('Congratulations %s. Your ticket (#%s) has been reserved and confirmation sent in an SMS to your phone.', session.userData.name, session.userData.orderNumber);
                session.beginDialog('/intents');
                //session.endDialog("Thank you, your ticket is on the way");
@@ -281,7 +285,7 @@ bot.dialog('/getDress', [
     function(session){
         if(session.userData.location){
             var msg = 'I suppose you want the order delivered to ' + session.userData.location + '?';
-            builder.Prompts.choice(session, msg, "Yes|No");
+            builder.Prompts.choice(session, msg, "Yes|No|Cancel");
         }
     },
     function(session, results){
@@ -289,8 +293,10 @@ bot.dialog('/getDress', [
         if(answer === "Yes"){
             session.userData.orderDeliveryAddress = session.userData.location;
             session.beginDialog('/confirmOrder');
-        } else{
+        } else if(answer === "No"){
             session.beginDialog('/getAddress');
+        } else{
+            session.beginDialog('/intents');
         }
     },
     function(session, results){
@@ -303,7 +309,7 @@ bot.dialog('/getDress', [
 bot.dialog('/confirmOrder', [
 	function(session){
 		var msg = 'Please confirm that I should pay ' + session.userData.orderPrice + ' for ' + session.userData.orderName + ' from ' + session.userData.orderStore + " to be delivered to " + session.userData.orderDeliveryAddress;
-		builder.Prompts.choice(session, msg, "Yes|No");
+		builder.Prompts.choice(session, msg, "Yes|No|Cancel");
 	},
 	function(session, results){
 		var answer = results.response.entity;
@@ -427,7 +433,7 @@ bot.dialog('/getShoes', [
     function(session){
         if(session.userData.location){
             var msg = 'I suppose you want the order delivered to ' + session.userData.location + '?';
-            builder.Prompts.choice(session, msg, "Yes|No");
+            builder.Prompts.choice(session, msg, "Yes|No|Cancel");
         }
     },
     function(session, results){
@@ -435,8 +441,10 @@ bot.dialog('/getShoes', [
         if(answer === "Yes"){
             session.userData.orderDeliveryAddress = session.userData.location;
             session.beginDialog('/confirmOrder');
-        } else{
+        } else if(answer === "No"){
             session.beginDialog('/getAddress');
+        } else{
+            session.beginDialog('/intents');
         }
     },
     function(session, results){
@@ -453,24 +461,37 @@ bot.dialog('/getPizza', [
         var msg = 'Should I pick your regular type ' + session.userData.pizzaType + ' and size ' + session.userData.pizzaSize + ' inches from your favourite place ' + session.userData.pizzaPlace + '?';
         builder.Prompts.choice(session, msg, "Yes|No|Cancel");
     },
-    function(session, results, next){
+    function(session, results){
         var answer = results.response.entity;
         if(answer === "Yes"){
             //session.userData.pizzaChoiceId = places.pizza[7].indexOf(session.userData.pizzaType);
             session.userData.orderStore = session.userData.pizzaPlace;
-            session.userData.orderName = session.userData.pizzaType + session.userData.pizzaSize;
             session.userData.orderPrice = "GHC25";
-            next();
+            session.beginDialog('/pizzaDelivery');
         } else if(answer === "No"){
             session.beginDialog('/choosePizzaPlace');
-            session.beginDialog('/choosePizzaType');
-            session.beginDialog('/choosePizzaSize');
-            next();
         } else{
+            session.send('Sorry, hope I can help you with something else');
             session.beginDialog('/intents');
         }
     },
+    function(session, results){
+        session.userData.pizzaPlace = results.response.entity;
+        session.beginDialog('/choosePizzaType');
+    },
+    function(session, results){
+        session.userData.pizzaType = results.response.entity;
+        session.beginDialog('/choosePizzaSize');
+    },
+    function(session, results){
+        session.userData.pizzaSize = results.response.entity;
+        session.beginDialog('/pizzaDelivery');
+    }
+]);
+
+bot.dialog('/pizzaDelivery', [
     function(session){
+        session.userData.orderName = session.userData.pizzaType + ' ' + session.userData.pizzaSize + ' inches';
         if(session.userData.location){
             var msg = 'I\'m going to deliver your pizza to ' + session.userData.location + '. Is that OK?';
             builder.Prompts.choice(session, msg, "Yes|No");
@@ -487,17 +508,49 @@ bot.dialog('/getPizza', [
     },
     function(session, results){
         session.userData.orderDeliveryAddress = results.response;
+        session.userData.orderCategory == 'pizza';
         session.beginDialog('/confirmOrder');
+    }
+]);
+
+bot.dialog('/choosePizzaPlace', [
+    function(session){
+        session.sendTyping();
+        var pizzaPlaces = [];
+        for(var i=0; i<places.pizza.length; i++){
+            pizzaPlaces.push(places.pizza[i][0]);
+        }
+        builder.Prompts.choice(session, 'Choose a pizza place to order from ...', pizzaPlaces);
+    },
+    function(session, results){
+        var answer = results.response.entity;
+        session.userData.pizzaPlace = answer;
+        for(var i=0; i<places.pizza.length; i++){
+            if(answer === places.pizza[i][0]){
+                session.userData.pizzaChoiceId = i;
+            }
+        }
+        session.endDialogWithResult(results);
     }
 ]);
 
 bot.dialog('/choosePizzaType', [
     function(session){
         session.sendTyping();
-        builder.Prompts.choice(session, 'Which pizza type would you like?', places.pizza[2][7]);
+        builder.Prompts.choice(session, 'Which pizza type would you like?', places.pizza[session.userData.pizzaChoiceId][7]);
     },
     function(session, results){
-        session.userData.pizzaType = results.response.entity;
+        session.endDialogWithResult(results);
+    }
+]);
+
+bot.dialog('/choosePizzaSize', [
+    function(session){
+        session.sendTyping();
+        builder.Prompts.choice(session, 'What size are we having this time?', places.pizza[session.userData.pizzaChoiceId][8]);
+    },
+    function(session, results){
+        session.endDialogWithResult(results);
     }
 ]);
 
@@ -528,7 +581,7 @@ bot.dialog('/profile', [
     (session, results, next) => {
         session.userData.inputphone = results.response;
         session.userData.code = sms.sms.getCode();
-        sms.sms.sendCode(session.userData.inputphone, session.userData.code);
+        //sms.sms.sendCode(session.userData.inputphone, session.userData.code);
         next();  
     },
     (session) => {

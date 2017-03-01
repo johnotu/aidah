@@ -40,6 +40,9 @@
 			"website of pizza store 1",
 			"email of pizza store 1",
 			"http://www.ghanayello.com/img/gh/e/1429286630-58-eddy-s-pizza.jpg",
+			["Hawaiian", "Pepperoni passion", "Farm house", "Kiss and cuddle"],
+			["8", "10", "12"],
+			["beef", "chicken", "onions", "fresh tomatoes", "pepper", "extra cheese", "sausage", "pineapple", "pepperoni"],
 			0
 		],
 		[
@@ -50,6 +53,9 @@
 			"website of pizza store 2",
 			"email of pizza store 2",
 			"https://media-cdn.tripadvisor.com/media/photo-s/03/07/cf/5a/mamma-mia.jpg",
+			["Hugs and kisses", "Sweet moments", "Fire starter", "Papa's love", "Soul mates"],
+			["8", "10", "12"],
+			["beef", "chicken", "onions", "fresh tomatoes", "pepper", "extra cheese", "sausage", "pineapple", "pepperoni"],
 			0
 		],
 		[
@@ -60,7 +66,7 @@
 			"website of pizza store 3",
 			"email of pizza store 3",
 			"http://mycityaccra.com/wp-content/uploads/2013/04/papas.jpg",
-			["Margherita", "Chicken delight", "Chicken supreme", "Vegetarian lite", "Hawaiian", "Pepperoni passion", "Farm house", "Kiss and cuddle", "Hugs and kisses", "Sweet moments", "Fire starter", "Papa's love", "Soul mates"],
+			["Margherita", "Chicken delight", "Chicken supreme", "Vegetarian lite"],
 			["8", "10", "12"],
 			["beef", "chicken", "onions", "fresh tomatoes", "pepper", "extra cheese", "sausage", "pineapple", "pepperoni"],
 			0
