@@ -7,6 +7,7 @@ var places = require("../utils/placesDb.json");
 var movies = require("../utils/moviesDB.json");
 var dresses = require("../utils/dressesDb.json");
 var shoes = require("../utils/shoesDb.json");
+var request = require("request");
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -22,6 +23,7 @@ var bot = new builder.UniversalBot(connector);
 var luisAppId = process.env.LuisAppId;
 var luisAPIKey = process.env.LuisAPIKey;
 var luisAPIHostName = process.env.LuisAPIHostName || 'api.projectoxford.ai';
+const mKey = process.env.MazzumaKey;
 
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
 
@@ -160,6 +162,8 @@ bot.dialog('/', [
     }   
 ]);
 
+const movieTicketCost = 1;
+
 bot.dialog('/getMovies', [
    function(session){
        session.send('These are the movies currently showing at Silverbird Cinema, Accra Mall ...');
@@ -193,26 +197,114 @@ bot.dialog('/getMovies', [
    },
    function(session, results){
        session.dialogData.movie = results.response.entity;
-       var choiceMovieId = 0;
+       //var choiceMovieId = 0; Should it be declared initially???
        for(var i=0; i<movies.movie.length; i++){
            if(movies.movie[i][0] === session.dialogData.movie){
-               choiceMovieId = i;
+               session.dialogData.choiceMovieId = i;
            }
        }
-       builder.Prompts.choice(session, 'Please select a screen time for your movie ...', movies.movie[choiceMovieId][7]);
+       session.sendTyping();
+       session.send(movies.movie[session.dialogData.choiceMovieId][3]);
+       session.sendTyping();
+       var msg = 'When do you want to see ' + session.dialogData.movie;
+       builder.Prompts.choice(session, msg, movies.movie[session.dialogData.choiceMovieId][7]);
+   },
+   function(session, results){
+       session.dialogData.movieDay = results.response.entity;
+       session.sendTyping();
+       var msg = 'Please select a screen time for ' + session.dialogData.movie + ' on ' + session.dialogData.movieDay;
+       builder.Prompts.choice(session, msg, movies.movie[session.dialogData.choiceMovieId][8]);
    },
    function(session, results){
        session.dialogData.movieTime = results.response.entity;
-       var msg = 'Please confirm you want to see ' + session.dialogData.movie + ' on ' + session.dialogData.movieTime;
+       builder.Prompts.choice(session, 'How many tickets do you want to purchase?', ['1', '2', '3', '4', '5', '6', 'More']);
+   },
+   function(session, results){
+       session.dialogData.orderQty = results.response.entity;
+       session.dialogData.orderTotal = movieTicketCost * parseInt(session.dialogData.orderQty);
+       var msg = 'Please confirm you want to see ' + session.dialogData.movie + ' on ' + session.dialogData.movieDay + ' by ' + session.dialogData.movieTime;
        builder.Prompts.choice(session, msg, "Yes|No|Cancel");
    },
    function(session, results){
+       
        if(results.response){
            var answer = results.response.entity;
            if(answer === "Yes"){
                session.userData.orderNumber = sms.sms.getCode();
+
+               request({
+                    uri: 'https://client.teamcyst.com/app.php',
+                    method: 'POST',
+                    json: {
+                      price: session.dialogData.orderTotal,
+                      orderID: session.userData.orderNumber,
+                      success_url: 'http://m.me/aidahbot',
+                      apikey: mKey
+                    }
+                
+                  }, function (error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        var payUrl = body;
+                        var mesg = new builder.Message(session).sourceEvent({
+                            facebook: {
+                                notification_type: "REGULAR",
+                                attachment: {
+                                    type: "template",
+                                    payload: {
+                                        template_type: "generic",
+                                        elements: [{
+                                            title: session.dialogData.movie + ' - ' + session.dialogData.orderQty + ' - GH₵' + session.dialogData.orderTotal,
+                                            image_url: movies.movie[session.dialogData.choiceMovieId][5],
+                                            subtitle: session.dialogData.movieDay + ' ' + session.dialogData.movieTime,
+                                            buttons: [{
+                                                type: "web_url",
+                                                title: "Pay",
+                                                url: payUrl,
+                                                webview_height_ratio: "tall"
+                                            }]
+                                        }]
+                                    }
+                                }
+                            }
+                        });
+                        session.send(mesg);
+                      //console.log('body:', body);
+                      //console.log('type of body: ', typeof body);
+                    } else {
+                      console.error("payment failed", response.statusCode, response.statusMessage, body.error);
+                    }
+                  });
+               
+               
+               
+               // const msg = new builder.Message(session).sourceEvent({
+                //     facebook: {
+                //         notification_type: "REGULAR",
+                //         attachment: {
+                //             type: "template",
+                //             payload: {
+                //                 template_type: "generic",
+                //                 elements: [{
+                //                     title: 'Ticket: ' + session.dialogData.movie,
+                //                     image_url: "https://s20.postimg.org/ghgh3n5dp/code.png",
+                //                     subtitle: session.dialogData.movieDay + ' ' + session.dialogData.movieTime,
+                //                     buttons: [{
+                //                         type: "web_url",
+                //                         title: "Silverbird Accra Mall",
+                //                         url: "http://silverbirdcinemas.com/accra/"
+                //                     }]
+                //                 }]
+                //             }
+                //         }
+                //     }
+                // });
+                
+               // session.send('Kindly present your ticket fr entry into the studios. Thank you for using Aidah');
+               //var payLink = payment(session.dialogData.orderTotal, session.userData.orderNumber);
+               //session.send('Please tap the link below to complete payment');
+               //session.send(payLink);
                //sms.sms.sendCode(session.userData.phoneNumber, session.userData.orderNumber);
-               session.send('Congratulations %s. Your ticket (#%s) has been reserved and confirmation sent in an SMS to your phone.', session.userData.name, session.userData.orderNumber);
+               //session.send('Congratulations %s. Your ticket (#%s) has been reserved and confirmation sent in an SMS to your phone.', session.userData.name, session.userData.orderNumber);
                session.beginDialog('/intents');
                //session.endDialog("Thank you, your ticket is on the way");
            } else {
@@ -222,6 +314,27 @@ bot.dialog('/getMovies', [
        }
    }
 ]);
+
+function payment(amount, orderId){
+  request({
+    uri: 'https://client.teamcyst.com/app.php',
+    method: 'POST',
+    json: {
+      price: amount,
+      orderID: orderId,
+      success_url: 'https://www.messenger.com/t/1250352005079651',
+      apikey: mKey
+    }
+
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log('payment call initiated ',body);
+      return body;
+    } else {
+      console.error("paymnt failed", response.statusCode, response.statusMessage, body.error);
+    }
+  });
+};
 
 bot.dialog('/getDress', [
 	function(session){
@@ -318,7 +431,12 @@ bot.dialog('/confirmOrder', [
             //enable to go live
             sms.sms.sendCode(session.userData.phoneNumber, session.userData.orderNumber);
 			session.send('Congratulations %s. Your %s order (#%s) has been processed and confirmation sent in an SMS to your phone. You can expect to receive your order within 48hrs.', session.userData.name, session.userData.orderName, session.userData.orderNumber);
-            session.beginDialog('/recommend');
+            if(session.userData.orderCategory === 'dress'){
+                session.beginDialog('/recommend');
+            }else{
+                session.beginDialog('/intents');
+            }
+            
             //session.beginDialog('/intents');
 		} else{
 			session.send("Oh OK. Maybe I can help you get some other thing");
@@ -344,7 +462,7 @@ bot.dialog('/recommend', [
             var msg = 'Would you like a shoe to go with your ' + session.userData.favColor + ' dress?';
             builder.Prompts.choice(session, msg, "Yes|No");
         } else {
-            session.beginDialog('/');
+            session.beginDialog('/intents');
         }
     },
     function(session, results){
@@ -353,7 +471,7 @@ bot.dialog('/recommend', [
             session.beginDialog('/getShoes');
         } else if(answer == "No"){
             session.send("Ok %s, maybe I can help you with something else", session.userData.name);
-            session.beginDialog('/');
+            session.beginDialog('/intents');
         }
     }
 ]);
@@ -453,6 +571,7 @@ bot.dialog('/getShoes', [
     }
 ]);
 
+
 bot.dialog('/getPizza', [
     function(session){
         session.sendTyping();
@@ -508,7 +627,7 @@ bot.dialog('/pizzaDelivery', [
     },
     function(session, results){
         session.userData.orderDeliveryAddress = results.response;
-        session.userData.orderCategory == 'pizza';
+        session.userData.orderCategory = 'pizza';
         session.beginDialog('/confirmOrder');
     }
 ]);
@@ -555,9 +674,10 @@ bot.dialog('/choosePizzaSize', [
 ]);
 
 /*
-bot.dialog('/pay', [
+bot.dialog('/orderFromPapas', [
     function(session){
-        
+        sendTyping();
+        builder.Prompts.Choice(session, 'What would like to order from Papas?', [Pizza, Food]);
     }
 ])
 */
@@ -644,6 +764,8 @@ bot.dialog('/chooseplace', [
 ]);
 
 bot.dialog('/intents', intents);
+
+
 
 if (useEmulator) {
     var restify = require('restify');

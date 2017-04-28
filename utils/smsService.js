@@ -16,7 +16,7 @@ exports.sms = {
 		client.messages.create({
 			to: phone,
 			from: '+16466634289',
-			body: 'Your order (# ' + code + ') has been processed and will reach you in 48hrs. Thank you for using Aidah.'
+			body: 'Your order (# ' + code + ') has been processed and will reach you in a few hours. Thank you for using Aidah.'
 		}, function(err, message){
 			console.log(message.sid);
 		});

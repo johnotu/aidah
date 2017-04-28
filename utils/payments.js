@@ -9,17 +9,23 @@ var headers = {
 
 var dataString = '{ "customer_name" : "John, "customer_phone" : "0264537375", "customer_email" : "customer@domainname.com", "wallet_provider" : "Airtel", "merchant_name" : "Aidah", "amount" : "1" }';
 
-var options = {
-    url: 'https://app.mpowerpayments.com/api/v1/direct-mobile/charge',
-    method: 'POST',
-    headers: headers,
-    body: dataString
-};
 
-function callback(error, response, body) {
-    if (!error && response.statusCode == 200) {
-        console.log(body);
+
+exports.pay = {
+    payment: function(){
+        var options = {
+            url: 'https://app.mpowerpayments.com/api/v1/direct-mobile/charge',
+            method: 'POST',
+            headers: headers,
+            body: dataString
+        };
+        
+        function callback(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log(body);
+            }
+        }
+        
+        request(options, callback);
     }
 }
-
-request(options, callback);
